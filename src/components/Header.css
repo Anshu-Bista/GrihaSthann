@@ -3,24 +3,36 @@
     justify-content: space-between;
     align-items: center;
     padding: 12px 30px;
+    overflow: visible;
     background: var(--soft-olive);
     position: sticky;
     top: 0;
     z-index: 100;
-    margin-bottom: 25px;
+    margin-bottom: 10px;
   }
-
+/* 
 .header-logo img {
-    height: 40px;      
+    height: 80px;      
     width: auto;      
     cursor: pointer;
+} */
+.header-logo {
+  display: flex;
+  align-items: center;
 }
+
+.header-logo img {
+  height: 40px;
+  transform: scale(1.2);
+  transform-origin: left center;
+}
+
 
 .header a {
     text-decoration: none;
     color: var(--off-white);
     margin: 0 12px;
-    font-size: 16px;
+    font-size: 20px;
     font-weight: bolder;
   }
   
