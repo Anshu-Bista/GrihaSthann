@@ -14,3 +14,12 @@ createRoot(document.getElementById('root')).render(
     </BrowserRouter> 
   </StrictMode>
 )
+
+// if (import.meta.env.DEV) {
+//   localStorage.setItem("token", "test");
+// }
+
+
+if (import.meta.env.DEV) {
+  localStorage.removeItem("token");
+}

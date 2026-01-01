@@ -1,54 +1,97 @@
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 12px 30px;
-    overflow: visible;
-    background: var(--soft-olive);
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    margin-bottom: 10px;
-  }
-/* 
-.header-logo img {
-    height: 80px;      
-    width: auto;      
-    cursor: pointer;
-} */
-.header-logo {
+  height: 64px;
+  padding: 0 32px;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  background: var(--soft-olive);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.header-logo img {
-  height: 40px;
-  transform: scale(1.2);
-  transform-origin: left center;
+/* LEFT */
+.logo img {
+  height: 42px;
+  cursor: pointer;
+}
+
+/* MID */
+.mid-header {
+  display: flex;
+  gap: 32px;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.mid-header a {
+  text-decoration: none;
+  font-weight: 500;
+  color: var(--off-white);
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+.mid-header a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -6px;
+  width: 0%;
+  height: 2px;
+  background: var(--forest-green);
+  transition: width 0.25s ease;
+}
+
+.mid-header a:hover {
+  color: var(--forest-green);
+}
+
+.mid-header a:hover::after {
+  width: 100%;
+}
+
+/* RIGHT */
+.right-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Login */
+.right-header a {
+  text-decoration: none;
+  font-weight: 500;
+  color: var(--off-white);
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.right-header a:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* Sign Up (Primary Button) */
+.signup-btn {
+  background: var(--forest-green);
+  color: white !important;
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(27, 94, 32, 0.25);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.header .signup-btn:hover {
+  background: var(--bright-green);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(46, 125, 50, 0.35);
 }
 
 
-.header a {
-    text-decoration: none;
-    color: var(--off-white);
-    margin: 0 12px;
-    font-size: 20px;
-    font-weight: bolder;
-  }
-  
-.header a:hover {
-    color: var(--sand-beige);
-  }
-
-.header a.active {
-    color: var(--sand-beige);
-    border-bottom: 3px solid var(--gold);
-    padding-bottom: 4px;
-    font-weight: 600;
+/* Profile button (logged in) */
+.right-header a[href="/profile"] {
+  background: var(--mint-green);
+  color: var(--forest-green);
+  border-radius: 999px;
+  padding: 8px 16px;
 }
-  
-.mid-header, .left-header {
-    display: flex;
-    gap: 20px;
-  }
-  
