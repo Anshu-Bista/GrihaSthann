@@ -3,8 +3,9 @@ import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
 
-import {Button} from '../components/Button.jsx'
-import './Registration.css'
+import {Button} from '../components/Button.jsx';
+import { TextInput } from "../components/TextInput.jsx";
+import './Form.css'
 
 export function Registration(){
     const {
@@ -24,50 +25,40 @@ export function Registration(){
                 
                 <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
                     {/* Name */}
-                    <div className="input-group">
-                        <span className="icon user-icon"></span>
-                        <input
-                        type="text"
-                        placeholder="Full Name"
-                        {...register("name", { required: "Name is required" })}
-                        />
-                    </div>
-                    {errors.name && <p className="error">{errors.name.message}</p>}
+                    <TextInput
+                    placeholder="Full Name"
+                    iconClass="user-icon"
+                    register={register("name", { required: "Name is required" })}
+                    error={errors.name}
+                    />
 
                     {/* Email */}
-                    <div className="input-group">
-                        <span className="icon email-icon"></span>
-                        <input
+                    <TextInput
                         type="email"
                         placeholder="Email address"
-                        {...register("email", { required: "Email is required" })}
+                        iconClass="email-icon"
+                        register={register("email", { required: "Email is required" })}
+                        error={errors.email}
                         />
-                    </div>
-                    {errors.email && <p>{errors.email.message}</p>}
 
-                    {/* Phone Number */}
-                    <div  className="input-group">
-                        <span className="icon phone-icon"></span>
-                        <input
-                            type="tel"
-                            placeholder="98XXXXXXXX"
-                            {...register("phone")}
-                        />
-                        {errors.phone && <p>{errors.phone.message}</p>}
-                    </div>
+                        {/* Phone Number */}
+                    <TextInput
+                        type="tel"
+                        placeholder="98XXXXXXXX"
+                        iconClass="phone-icon"
+                        register={register("phone")}
+                        error={errors.phone}
+                    />
 
-                    {/* Address */}
-                    <div className="input-group">
-                        <span className="icon location-icon"></span>
-                        <input
-                            type="text"
-                            placeholder="Your address"
-                            {...register("address")}
-                        />
-                    </div>
-                    {errors.address && <p>{errors.address.message}</p>}
+                {/* Address */}
+                    <TextInput
+                        placeholder="Your address"
+                        iconClass="location-icon"
+                        register={register("address")}
+                        error={errors.address}
+                    />
                     
-
+                    
                     {/* Gender */}
                     <div className="gender-group">
                         <span className="icon gender-icon"></span>
@@ -90,37 +81,28 @@ export function Registration(){
 
 
                     {/* Password */}
-                    <div className="input-group">
-                    <span className="icon lock-icon"></span>
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            {...register("password", {
-                            required: "Password is required"}
-                            )}
-                        />
-                    </div>
-                    {errors.password && <p>{errors.password.message}</p>}
-                    
+                    <TextInput
+                        type="password"
+                        placeholder="Password"
+                        iconClass="lock-icon"
+                        register={register("password", { required: "Password is required" })}
+                        error={errors.password}
+                    />
 
-                    {/* Confirm Password */}
-                    <div className="input-group">
-                        <span className="icon lock-icon"></span>
-                        
-                        <input
-                            type="password"
-                            placeholder="Confirm password"
-                            {...register("confirmPassword", {
-                            required: "Confirm your password"}
-                        )}
-                        />
-                    </div>
-                    {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
-                    
+                    <TextInput
+                        type="password"
+                        placeholder="Confirm password"
+                        iconClass="lock-icon"
+                        register={register("confirmPassword", {
+                            required: "Confirm your password"
+                        })}
+                        error={errors.confirmPassword}
+                    />
 
-                    {/* Buttons */}<div className="button-wrapper">
-      <Button type="submit" variant="secondary">Register</Button>
-    </div>
+                    {/* Buttons */}
+                    <div className="button-wrapper">
+                        <Button type="submit" variant="secondary">Register</Button>
+                    </div>
 
                     <p className="login-text">
                         Already have an account?

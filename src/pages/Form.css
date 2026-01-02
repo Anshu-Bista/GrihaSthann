@@ -86,6 +86,10 @@ background-image: url("../../public/lock.png");
     color: red;
     margin-top: -10px;
   }
+  .input-group input.error-input {
+    border-color: red;
+  }
+  
 
   .gender-group {
     min-height: 40px;
@@ -133,6 +137,7 @@ background-image: url("../../public/lock.png");
     font-size: 14px;
     color: var(--dark-grey);
     transition: all 0.2s ease;
+    margin-right: 20px;
   }
   
   /* selected state */
