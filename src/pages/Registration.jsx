@@ -2,6 +2,8 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
+
+import {Button} from '../components/Button.jsx'
 import './Registration.css'
 
 export function Registration(){
@@ -20,61 +22,51 @@ export function Registration(){
         <>
             <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
                 {/* Name */}
-                <div>
-                    <label>
-                    Name
+                <div className="input-group">
+                    <span className="icon user-icon"></span>
                     <input
-                        type="text"
-                        placeholder="Full Name"
-                        {...register("name", { required: "Name is required" })}
+                    type="text"
+                    placeholder="Full Name"
+                    {...register("name", { required: "Name is required" })}
                     />
-                    </label>
-                    {errors.name && <p>{errors.name.message}</p>}
                 </div>
+                {errors.name && <p className="error">{errors.name.message}</p>}
 
                 {/* Email */}
-                <div>
-                    <label>
-                    Email
+                <div className="input-group">
+                    <span className="icon email-icon"></span>
                     <input
-                        type="email"
-                        placeholder="Email address"
-                        {...register("email", {
-                        required: "Email is required"
-                        })}
+                    type="email"
+                    placeholder="Email address"
+                    {...register("email", { required: "Email is required" })}
                     />
-                    </label>
-                    {errors.email && <p>{errors.email.message}</p>}
                 </div>
+                {errors.email && <p>{errors.email.message}</p>}
 
                 {/* Phone Number */}
-                <div>
-                    <label>
-                    Phone Number <span>(optional)</span>
+                <div  className="input-group">
+                    <span className="icon phone-icon"></span>
                     <input
                         type="tel"
                         placeholder="98XXXXXXXX"
                         {...register("phone")}
                     />
-                    </label>
                     {errors.phone && <p>{errors.phone.message}</p>}
                 </div>
 
                 {/* Address */}
-                <div>
-                    <label>
-                    Address <span>(optional)</span>
+                <div className="input-group">
                     <input
                         type="text"
                         placeholder="Your address"
                         {...register("address")}
                     />
-                    </label>
-                    {errors.address && <p>{errors.address.message}</p>}
                 </div>
+                {errors.address && <p>{errors.address.message}</p>}
+                
 
                 {/* Gender */}
-                <div>
+                <div className="input-group">
                     <label>Gender <span>(optional)</span></label>
                     <div className="gender-group">
                     <label>
@@ -108,9 +100,8 @@ export function Registration(){
                 </div>
 
                 {/* Password */}
-                <div>
-                    <label>
-                    Password
+                <div className="input-group">
+                <span className="icon lock-icon"></span>
                     <input
                         type="password"
                         placeholder="Password"
@@ -118,14 +109,14 @@ export function Registration(){
                         required: "Password is required"}
                         )}
                     />
-                    </label>
-                    {errors.password && <p>{errors.password.message}</p>}
                 </div>
+                {errors.password && <p>{errors.password.message}</p>}
+                
 
                 {/* Confirm Password */}
-                <div>
-                    <label>
-                    Confirm Password
+                <div className="input-group">
+                    <span className="icon lock-icon"></span>
+                    
                     <input
                         type="password"
                         placeholder="Confirm password"
@@ -133,16 +124,18 @@ export function Registration(){
                         required: "Confirm your password"}
                     )}
                     />
-                    </label>
-                    {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
                 </div>
+                {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
+                
 
                 {/* Buttons */}
-                <button type="submit">Register</button>
+                <Button type="submit" variant="secondary">Register</Button>
 
-                <p className="login-link">
-                    Already have an account? <Link to="/login">Login</Link>
+                <p className="login-text">
+                    Already have an account?
+                    <Link to="/login"> Login</Link>
                 </p>
+
             </form>
         
         </>

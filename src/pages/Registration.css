@@ -1,4 +1,10 @@
 .register-form{
+    max-width: 420px;
+    margin-left: 200px;
+    margin-right: 200px;
+    padding: 28px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
