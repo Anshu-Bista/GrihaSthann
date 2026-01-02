@@ -34,7 +34,7 @@ export function Header({role}){
                         ) : (
                         <>
                             <Link to="/login">Login</Link>
-                            <Link to="/signup" className="signup-btn">Sign Up</Link>
+                            <Link to="/register" className="signup-btn">Sign Up</Link>
                         </>
                         )}
                 </div>
