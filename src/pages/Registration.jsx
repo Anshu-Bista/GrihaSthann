@@ -58,7 +58,7 @@ export function Registration(){
 
                     {/* Address */}
                     <div className="input-group">
-                    <span className="icon location-icon"></span>
+                        <span className="icon location-icon"></span>
                         <input
                             type="text"
                             placeholder="Your address"
@@ -74,17 +74,17 @@ export function Registration(){
 
                         <label className="gender-option">
                             <input type="radio" value="male" {...register("gender")} />
-                            Male
+                            <span>Male</span>
                         </label>
 
                         <label className="gender-option">
                             <input type="radio" value="female" {...register("gender")} />
-                            Female
+                            <span>Female</span>
                         </label>
 
                         <label className="gender-option">
                             <input type="radio" value="other" {...register("gender")} />
-                            Other
+                            <span>Other</span>
                         </label>
                     </div>
 
@@ -118,8 +118,9 @@ export function Registration(){
                     {errors.confirmPassword && <p>{errors.confirmPassword.message}</p>}
                     
 
-                    {/* Buttons */}
-                    <Button type="submit" variant="secondary">Register</Button>
+                    {/* Buttons */}<div className="button-wrapper">
+      <Button type="submit" variant="secondary">Register</Button>
+    </div>
 
                     <p className="login-text">
                         Already have an account?

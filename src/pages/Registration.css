@@ -3,20 +3,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    box-sizing: border-box;
   }
   
 .register-form{
+    width: 100%;
     max-width: 420px;
     padding: 28px;
-    margin-left: 200px;
-    margin-right: 200px;
+    gap: 16px;
 
     display: flex;
     flex-direction: column;
+    align-items: stretch;
     justify-content: center;
-    align-items: center;
+    box-sizing: border-box;
 
-    gap: 16px
 }
 
 /* Input wrapper */
@@ -53,12 +54,15 @@ background-image: url("../../public/call.png");
 background-image: url("../../public/lock.png");
 }
 .location-icon {
-    background-image: url("../../public/.location.png");
+    background-image: url("../../public/location.png");
 }
+.gender-icon {
+    background-image: url("../../public/gender.png");
+  }
 
 /* Input field */
 .input-group input {
-    width: 90%;
+    width: 100%;
     padding: 8px 10px 8px 44px;
     border-radius: 8px;
     border: 2px solid var(--sand-beige);
@@ -84,21 +88,36 @@ background-image: url("../../public/lock.png");
   }
 
   .gender-group {
-    width: 100%;
+    min-height: 40px;
+  
     display: flex;
+    flex-direction: row;
     align-items: center;
     gap: 10px;
   
-    padding: 8px 12px 8px 44px;
+    padding: 8px 10px 8px 44px;
     border: 2px solid var(--sand-beige);
     border-radius: 8px;
     background: var(--off-white);
+  
+    box-sizing: border-box;
     position: relative;
   }
+
+.input-group input,
+.gender-group,
+.button-wrapper button {
+  width: 100% !important;
+  box-sizing: border-box;
+  display: block;
+}
   
-  /* optional gender icon */
-  .gender-icon {
-    background-image: url("/icons/gender.png");
+  /* label becomes the clickable pill */
+  .gender-option {
+    display: flex;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
   }
   
   /* hide radio */
@@ -106,23 +125,23 @@ background-image: url("../../public/lock.png");
     display: none;
   }
   
-  /* pill buttons */
-  .gender-option {
+  /* pill */
+  .gender-option span {
     padding: 6px 12px;
     border-radius: 20px;
     border: 1.5px solid var(--sand-beige);
-    font-size: 13px;
-    cursor: pointer;
+    font-size: 14px;
     color: var(--dark-grey);
+    transition: all 0.2s ease;
   }
   
   /* selected state */
-  .gender-option input:checked + span,
-  .gender-option input:checked {
-    background: var(--forest-green);
+  .gender-option input:checked + span {
+    background-color: var(--forest-green);
     color: white;
     border-color: var(--forest-green);
   }
+   
   
 /* Login text */
 .login-text {
@@ -140,6 +159,13 @@ background-image: url("../../public/lock.png");
   .login-text a:hover {
     text-decoration: underline;
   }
+  /* .register-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%!important;
+  }
+   */
 
   /* .btn-secondary {
     background: transparent;

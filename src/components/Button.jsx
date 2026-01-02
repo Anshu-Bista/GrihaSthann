@@ -5,12 +5,13 @@ export function Button({
   type = "button",
   variant = "primary",
   disabled = false,
-  onClick
+  onClick,
+  className=""
 }) {
   return (
     <button
       type={type}
-      className={`btn btn-${variant}`}
+      className={`btn btn-${variant} ${className}`}
       disabled={disabled}
       onClick={onClick}
     >
