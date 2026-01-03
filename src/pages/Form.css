@@ -20,6 +20,22 @@
 
 }
 
+.form-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.form-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.form-subtitle {
+  font-size: 14px;
+  color: var(--dark-grey);
+}
+
 /* Input wrapper */
 .input-group {
     position: relative;
@@ -90,7 +106,7 @@ background-image: url("../../public/lock.png");
     border-color: red;
   }
   
-
+  /* Gender Radio Button */
   .gender-group {
     min-height: 40px;
   
@@ -164,17 +180,19 @@ background-image: url("../../public/lock.png");
   .login-text a:hover {
     text-decoration: underline;
   }
-  /* .register-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%!important;
-  }
-   */
 
-  /* .btn-secondary {
-    background: transparent;
-    border: 2px solid var(--forest-green);
-    color: var(--forest-green);
-  } */
-  
+/* FORGOT PASSWORD for login page */
+.forgot-password {
+  text-align: right;
+  margin-top: -6px;
+}
+
+.forgot-password a {
+  font-size: 13px;
+  color: var(--forest-green);
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}
