@@ -1,15 +1,23 @@
-import express from "express"
-
+import express from "express";
+import cors from "cors";
 
 const app = express();
 
-app.use(express.json)
+// enable CORS
+app.use(cors());
 
+// middleware
+app.use(express.json());
 
-app.get("/", (req, res)=>{
-    res.send("Application is running")
+app.get("/", (req, res) => {
+  res.send("Application is running");
 });
 
-app.listen(5000,()=>{
-    console.log("Server running on port 5000")
+app.get("/api/test", (req, res) => {
+  res.json({ message: "Backend connected successfully 🚀" });
+});
+
+const PORT = 5000;
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
