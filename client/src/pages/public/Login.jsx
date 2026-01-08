@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-import { Button } from "../components/Button.jsx";
-import { TextInput } from "../components/TextInput.jsx";
-import { FormHeader } from "../components/FormHeader.jsx";
+import { Button } from "../../components/Button.jsx";
+import { TextInput } from "../../components/TextInput.jsx";
+import { FormHeader } from "../../components/FormHeader.jsx";
 
-import './Form.css';
+import '../../css/Form.css';
 
 export function Login() {
   const {
