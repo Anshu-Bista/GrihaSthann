@@ -1,12 +1,11 @@
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 
-
 import {Button} from '../../components/Button.jsx';
 import { TextInput } from "../../components/TextInput.jsx";
 import '../../css/Form.css';
 
-export function Registration(){
+export default function Registration(){
     const {
         register,
         handleSubmit,

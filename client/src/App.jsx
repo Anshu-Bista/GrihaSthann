@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Header } from "./components/Header";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import PublicRoutes from "./routes/PublicRoutes";
 
 function App() {
-  const [token, setToken] = useState(null);
-  const [role, setRole] = useState(null);
-
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
+  const [role, setRole] = useState(() => localStorage.getItem("role"));
+  
+  console.log(token, role)
   return (
     <>
       {/* Header is shared */}

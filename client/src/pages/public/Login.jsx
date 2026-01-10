@@ -7,7 +7,7 @@ import { FormHeader } from "../../components/FormHeader.jsx";
 
 import '../../css/Form.css';
 
-export function Login() {
+export default function Login() {
   const {
     register,
     handleSubmit,

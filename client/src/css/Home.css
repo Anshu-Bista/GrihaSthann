@@ -1,0 +1,9 @@
+.home-container {
+    max-width: 1200px;   /* or 1100px */
+    margin: 0 auto;      /* centers container */
+    padding: 0 24px;     /* inner spacing */
+  }
+  .home-container {
+    outline: 4px solid red;
+  }
+  

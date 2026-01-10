@@ -15,11 +15,11 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>
 )
 
-// if (import.meta.env.DEV) {
-//   localStorage.setItem("token", "test");
-// }
-
-
 if (import.meta.env.DEV) {
-  localStorage.removeItem("token");
+  localStorage.setItem("token", "test");
 }
+
+
+// if (import.meta.env.DEV) {
+//   localStorage.removeItem("token");
+// }
