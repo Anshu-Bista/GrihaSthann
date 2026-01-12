@@ -1,10 +1,6 @@
 import "./StatsCard.css";
 
-export default function StatsCard({ props}) {
-    
-    console.log("ALL PROPS:", props);
-    
-  const { title, value, icon, subicon, subtitle } = props;
+export default function StatsCard({ title, value, icon, subicon, subtitle}) {
     return (
       <div className="stats-card">
         {/* Image */}

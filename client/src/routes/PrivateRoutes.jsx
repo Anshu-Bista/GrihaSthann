@@ -6,7 +6,6 @@ const PrivateRoutes = () => {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <Routes>
-
         <Route path="/home" element={<UserHome />} />
       </Routes>
     </Suspense>
