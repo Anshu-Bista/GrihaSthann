@@ -17,6 +17,8 @@ app.get("/api/test", (req, res) => {
   res.json({ message: "Backend connected successfully 🚀" });
 });
 
+await createAdminIfNotExists();
+
 const PORT = 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
