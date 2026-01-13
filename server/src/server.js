@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { connection } from "./database/db";
 import { authRouter } from "./routes/authRoutes";
+import { uploadRouter } from "./routes/uploadRoutes.js";
 
 const app = express();
 
@@ -26,6 +27,7 @@ connection()
 
 //Routes
 app.use("/api/auth", authRouter);
+app.use("/api/file", uploadRouter);
 
 app.get("/", (req, res) => {
   res.send("Application is running");
