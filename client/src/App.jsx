@@ -1,34 +1,9 @@
-import { useEffect, useState } from "react";
-import { Header } from "./components/Header";
-import PrivateRoutes from "./routes/PrivateRoutes";
-import PublicRoutes from "./routes/PublicRoutes";
-import Home from "./pages/private/Home.jsx";
-function App() {
-  // const [token, setToken] = useState(() => localStorage.getItem("token"));
-  // const [role, setRole] = useState(() => localStorage.getItem("role"));
-  
-  //console.log(token, role)
-  return (
-    <Home/>
-    // <>
-    //   {/* Header is shared */}
-    //   <Header />
 
-    //   {/* Routes */}
-    //   {token && role ? (
-    //     <PrivateRoutes
-    //       token={token}
-    //       role={role}
-    //       setToken={setToken}
-    //     />
-    //   ) : (
-    //     <PublicRoutes
-    //       setToken={setToken}
-    //       setRole={setRole}
-    //     />
-    //   )}
-    // </>
-  );
+import Home from "./pages/private/Home.jsx";
+import { AppRoutes } from "./AppRoutes.jsx";
+function App() {
+    // <Home/>
+    <AppRoutes/>
 }
 
 export default App;

@@ -19,5 +19,5 @@ export const createAdminIfNotExists = async () => {
     role: "admin",
   });
 
-  console.log("✅ Admin created");
+  console.log(" Admin created");
 };
