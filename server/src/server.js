@@ -1,43 +1,56 @@
 import express from "express";
 import cors from "cors";
-import { connection } from "./database/db";
-import { authRouter } from "./routes/authRoutes";
+import {sequelize} from "./database/db.js";
+
+// 🔥 IMPORT MODELS (CRITICAL)
+import "./model/userModel.js";
+
+import { authRouter } from "./routes/authRoutes.js";
 import { uploadRouter } from "./routes/uploadRoutes.js";
+import { userRouter } from "./routes/userRoutes.js";
+import { createAdminIfNotExists } from "./model/createAdmin.js";
 
 const app = express();
+const PORT = 5000;
 
-// enable CORS
-app.use(cors());
-
-// app.use(cors({
-//   origin: "http://localhost:5173",
-//   methods: ["GET", "POST", "PATCH", "DELETE"],
-//   credentials: true,
-// }));
 // middleware
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  credentials: true,
+}));
+
 app.use(express.json());
 
-// DB connection
-connection()
-  .then(async () => {
-    console.log("Database connected");
+const startServer = async () => {
+  try {
+    await sequelize.authenticate();
+    console.log("✅ Database connected");
+
+    // 🔥 CREATE TABLES
+    await sequelize.sync({ alter: true });
+    console.log("✅ Tables synced");
+
+    // 🔥 SAFE TO QUERY NOW
     await createAdminIfNotExists();
-  })
-  .catch((err) => console.error("DB connection failed:", err));
 
-//Routes
-app.use("/api/auth", authRouter);
-app.use("/api/file", uploadRouter);
+    // routes
+    app.use("/api/auth", authRouter);
+    app.use("/api/file", uploadRouter);
+    app.use("/api/users", userRouter);
 
-app.get("/", (req, res) => {
-  res.send("Application is running");
-});
+    app.get("/", (req, res) => {
+      res.send("Application is running");
+    });
 
-// app.get("/api/test", (req, res) => {
-//   res.json({ message: "Backend connected successfully 🚀" });
-// });
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
 
-const PORT = 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+  } catch (err) {
+    console.error("❌ Startup failed:", err);
+  }
+};
+
+startServer();

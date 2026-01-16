@@ -1,4 +1,4 @@
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import { User } from "./userModel.js";
 
 export const createAdminIfNotExists = async () => {
@@ -7,7 +7,7 @@ export const createAdminIfNotExists = async () => {
   const admin = await User.findOne({ where: { email: adminEmail } });
   if (admin) return;
 
-  const hashedPassword = await bcrypt.hash("admin123", 10);
+  const hashedPassword = await bcrypt.hash("admin@123", 10);
 
   await User.create({
     name: "Admin",

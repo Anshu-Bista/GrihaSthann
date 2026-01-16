@@ -10,7 +10,7 @@ import visit from "../../assets/visit.png"
 import '../../css/Home.css';
 
 export default function Home(){
-
+console.log("home")
     return(
         <>
             <div className="home-container">

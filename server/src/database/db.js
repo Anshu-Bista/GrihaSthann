@@ -1,7 +1,7 @@
 import { Sequelize } from "sequelize";
 
 export const sequelize = new Sequelize(
-  "mithometer",    
+  "GrihaSthan",    
   "postgres",     
   "postgresql",    
   {
@@ -11,12 +11,3 @@ export const sequelize = new Sequelize(
   }
 );
 
-export const connection = async () => {
-  try {
-    await sequelize.authenticate(); 
-    await sequelize.sync({alter:true});         
-    console.log("Database connected successfully");
-  } catch (e) {
-    console.error("Database connection failed:", e.message);
-  }
-};

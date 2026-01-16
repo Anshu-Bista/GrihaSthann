@@ -1,5 +1,5 @@
 import { User } from "../model/userModel.js";
-import bcrypt from "bcryptjs";
+import bcrypt from "bcrypt";
 import { generateToken } from "../security/jwt-utils.js";
 
 
@@ -69,8 +69,6 @@ export const register = async (req, res) => {
     return res.status(500).send({ message: error.message });
   }
 };
-
-
 
 
 /*------------ LOGIN (Admin & User)---------------------- */

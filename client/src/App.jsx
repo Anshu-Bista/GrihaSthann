@@ -1,23 +1,13 @@
-
-import Home from "./pages/private/Home.jsx";
-import { AppRoutes } from "./AppRoutes.jsx";
+import PrivateRoutes from "./routes/PrivateRoutes.jsx";
+import PublicRoutes from "./routes/PublicRoutes.jsx";
 function App() {
-    // <Home/>
-    <AppRoutes/>
+    const token = localStorage.getItem("access_token");
+    return(
+        <>
+            {token? <PrivateRoutes/>: <PublicRoutes/>}
+        </>
+    )
+    
 }
 
 export default App;
-
-// import { useEffect } from "react";
-
-// function App() {
-//   useEffect(() => {
-//     fetch("http://localhost:5000/api/test")
-//       .then(res => res.json())
-//       .then(data => console.log(data));
-//   }, []);
-
-//   return <h1>React + Node Connected</h1>;
-// }
-
-// export default App;
