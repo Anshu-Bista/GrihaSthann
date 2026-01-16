@@ -1,10 +1,8 @@
-import PrivateRoutes from "./routes/PrivateRoutes.jsx";
-import PublicRoutes from "./routes/PublicRoutes.jsx";
+import { AppRoutes } from "./AppRoutes.jsx";
 function App() {
-    const token = localStorage.getItem("access_token");
     return(
         <>
-            {token? <PrivateRoutes/>: <PublicRoutes/>}
+        <AppRoutes/>
         </>
     )
     

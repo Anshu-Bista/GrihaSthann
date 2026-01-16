@@ -1,23 +1,44 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Button } from "../../components/Button.jsx";
 import { TextInput } from "../../components/TextInput.jsx";
 import { FormHeader } from "../../components/FormHeader.jsx";
-
+import { loginSchema } from "../../schema/auth.schema.js";
+import { useApi } from "../../hooks/useAPI.js";
 import '../../css/Form.css';
+import { useAuth } from "../../context/AuthContext.jsx";
 
 export default function Login() {
+  const navigate = useNavigate();
+  const { callApi } = useApi();
+  const { login }= useAuth();
+
   const {
     register,
     handleSubmit,
     formState: { errors }
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(loginSchema)
+  });
 
-  function onSubmit(data) {
-    console.log(data);
-  }
-
+  // ✅ This receives form data automatically
+  const onSubmit = async (loginData) => {
+    try {
+      const res = await callApi("POST", "/auth/login", {
+        data: loginData,
+      });
+      login(res.access_token, res.user);
+      // navigate after success
+      console.log("LOGIN SUCCESS, NAVIGATING...");
+      navigate("/home", { replace: true });
+      console.log(res);
+    } catch (e) {
+      console.error("Login failed:", e.message);
+    }
+  };
+  
   return (
     <div className="register-wrapper">
       <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
@@ -31,7 +52,7 @@ export default function Login() {
           type="email"
           placeholder="Email address"
           iconClass="email-icon"
-          register={register("email", { required: "Email is required" })}
+          register={register("email")}
           error={errors.email}
         />
 
@@ -39,7 +60,7 @@ export default function Login() {
           type="password"
           placeholder="Password"
           iconClass="lock-icon"
-          register={register("password", { required: "Password is required" })}
+          register={register("password")}
           error={errors.password}
         />
 

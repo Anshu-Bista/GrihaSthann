@@ -1,6 +1,6 @@
 // src/hooks/useApi.js
 import { useState } from "react";
-import { apiRequest } from "../api/api.js"; // make sure this path is correct
+import { apiRequest } from "../utils/api.js"; // make sure this path is correct
 
 export const useApi = () => {
   const [loading, setLoading] = useState(false);

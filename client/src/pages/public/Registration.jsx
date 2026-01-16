@@ -1,22 +1,37 @@
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 import {Button} from '../../components/Button.jsx';
 import { TextInput } from "../../components/TextInput.jsx";
+import { useApi } from "../../hooks/useAPI.js";
 import '../../css/Form.css';
+import { registerSchema } from "../../schema/auth.schema.js";
 
 export default function Registration(){
+    const navigate = useNavigate();
+    const { callApi } = useApi();
     const {
         register,
         handleSubmit,
-        reset,
         formState:{errors}
-        }= useForm();
+        }= useForm({
+            resolver: zodResolver(registerSchema)
+        });
     
-        function onSubmit(data){
-            console.log("Form values:", data);
-            reset();
+
+    console.log(errors);
+    const onSubmit = async (userData) => {
+        try {
+            const res = await callApi("POST", "/auth/register", { data: userData });
+            // THEN navigate
+            navigate("/login");
+            console.log(res);
+        } catch (err) {
+        console.log(err.message);
         }
+    };
+
     return(
         <>
             <div className="register-wrapper">
@@ -26,7 +41,7 @@ export default function Registration(){
                     <TextInput
                     placeholder="Full Name"
                     iconClass="user-icon"
-                    register={register("name", { required: "Name is required" })}
+                    register={register("name")}
                     error={errors.name}
                     />
 
@@ -35,7 +50,7 @@ export default function Registration(){
                         type="email"
                         placeholder="Email address"
                         iconClass="email-icon"
-                        register={register("email", { required: "Email is required" })}
+                        register={register("email")}
                         error={errors.email}
                         />
 
@@ -83,7 +98,7 @@ export default function Registration(){
                         type="password"
                         placeholder="Password"
                         iconClass="lock-icon"
-                        register={register("password", { required: "Password is required" })}
+                        register={register("password")}
                         error={errors.password}
                     />
 
@@ -91,9 +106,7 @@ export default function Registration(){
                         type="password"
                         placeholder="Confirm password"
                         iconClass="lock-icon"
-                        register={register("confirmPassword", {
-                            required: "Confirm your password"
-                        })}
+                        register={register("confirmPassword")}
                         error={errors.confirmPassword}
                     />
 

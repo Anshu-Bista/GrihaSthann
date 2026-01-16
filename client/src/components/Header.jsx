@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/Logo.png";
 import './Header.css';
+import { useAuth } from "../context/AuthContext";
 
 export function Header({role}){
-    const isLoggedIn = Boolean(localStorage.getItem("token"));
+    const { token } = useAuth();
+    const isLoggedIn = Boolean(token);
     return(
         <div className="header">
             {/* LEFT: Logo (always visible) */}
