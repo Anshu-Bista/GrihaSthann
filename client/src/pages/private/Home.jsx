@@ -35,7 +35,7 @@ console.log("home")
                      subicon={pin}
                      subtitle="covered across key cities"/>
 
-                    <StatsCard title = "visit"
+                    <StatsCard title = "visits"
                      value ="100+"
                      icon= {visit}
                      subicon={calender}
