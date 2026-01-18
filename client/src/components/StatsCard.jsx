@@ -9,6 +9,7 @@ export default function StatsCard({ title, value, icon, subicon, subtitle}) {
                 <img src={icon} alt = ""/>
             </div>
             <div className="sub-circle">
+              
                 <img src={subicon} alt = ""/>
             </div>
         </div>
