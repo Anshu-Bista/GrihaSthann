@@ -2,127 +2,133 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {Button} from '../../components/Button.jsx';
+import { Button } from "../../components/Button.jsx";
 import { TextInput } from "../../components/TextInput.jsx";
 import { useApi } from "../../hooks/useAPI.js";
-import '../../css/Form.css';
+import "../../css/Form.css";
 import { registerSchema } from "../../schema/auth.schema.js";
 
-export default function Registration(){
-    const navigate = useNavigate();
-    const { callApi } = useApi();
-    const {
-        register,
-        handleSubmit,
-        formState:{errors}
-        }= useForm({
-            resolver: zodResolver(registerSchema)
-        });
-    
+export default function Registration() {
+  const navigate = useNavigate();
+  const { callApi } = useApi();
 
-    console.log(errors);
-    const onSubmit = async (userData) => {
-        try {
-            const res = await callApi("POST", "/auth/register", { data: userData });
-            // THEN navigate
-            navigate("/login");
-            console.log(res);
-        } catch (err) {
-        console.log(err.message);
-        }
-    };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(registerSchema),
+  });
 
-    return(
-        <>
-            <div className="register-wrapper">
-                
-                <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
-                    {/* Name */}
-                    <TextInput
-                    placeholder="Full Name"
-                    iconClass="user-icon"
-                    register={register("name")}
-                    error={errors.name}
-                    />
+  const onSubmit = async (userData) => {
+    try {
+      const res = await callApi("POST", "/auth/register", {
+        data: userData,
+      });
 
-                    {/* Email */}
-                    <TextInput
-                        type="email"
-                        placeholder="Email address"
-                        iconClass="email-icon"
-                        register={register("email")}
-                        error={errors.email}
-                        />
+      navigate("/login");
+      console.log(res);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
-                        {/* Phone Number */}
-                    <TextInput
-                        type="tel"
-                        placeholder="98XXXXXXXX"
-                        iconClass="phone-icon"
-                        register={register("phone")}
-                        error={errors.phone}
-                    />
+  return (
+    <div className="register-wrapper">
+      <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
+        {/* Name */}
+        <TextInput
+          name="name"
+          placeholder="Full Name"
+          iconClass="user-icon"
+          register={register}
+          error={errors.name}
+        />
 
-                {/* Address */}
-                    <TextInput
-                        placeholder="Your address"
-                        iconClass="location-icon"
-                        register={register("address")}
-                        error={errors.address}
-                    />
-                    
-                    
-                    {/* Gender */}
-                    <div className="gender-group">
-                        <span className="icon gender-icon"></span>
+        {/* Email */}
+        <TextInput
+          type="email"
+          name="email"
+          placeholder="Email address"
+          iconClass="email-icon"
+          register={register}
+          error={errors.email}
+        />
 
-                        <label className="gender-option">
-                            <input type="radio" value="male" {...register("gender")} />
-                            <span>Male</span>
-                        </label>
+        {/* Phone Number */}
+        <TextInput
+          type="tel"
+          name="phone"
+          placeholder="98XXXXXXXX"
+          iconClass="phone-icon"
+          register={register}
+          error={errors.phone}
+        />
 
-                        <label className="gender-option">
-                            <input type="radio" value="female" {...register("gender")} />
-                            <span>Female</span>
-                        </label>
+        {/* Address */}
+        <TextInput
+          name="address"
+          placeholder="Your address"
+          iconClass="location-icon"
+          register={register}
+          error={errors.address}
+        />
 
-                        <label className="gender-option">
-                            <input type="radio" value="other" {...register("gender")} />
-                            <span>Other</span>
-                        </label>
-                    </div>
+        {/* Gender */}
+        <div className="gender-group">
+          <span className="icon gender-icon"></span>
 
+          <label className="gender-option">
+            <input type="radio" value="male" {...register("gender")} />
+            <span>Male</span>
+          </label>
 
-                    {/* Password */}
-                    <TextInput
-                        type="password"
-                        placeholder="Password"
-                        iconClass="lock-icon"
-                        register={register("password")}
-                        error={errors.password}
-                    />
+          <label className="gender-option">
+            <input type="radio" value="female" {...register("gender")} />
+            <span>Female</span>
+          </label>
 
-                    <TextInput
-                        type="password"
-                        placeholder="Confirm password"
-                        iconClass="lock-icon"
-                        register={register("confirmPassword")}
-                        error={errors.confirmPassword}
-                    />
+          <label className="gender-option">
+            <input type="radio" value="other" {...register("gender")} />
+            <span>Other</span>
+          </label>
 
-                    {/* Buttons */}
-                    <div className="button-wrapper">
-                        <Button type="submit" variant="secondary">Register</Button>
-                    </div>
+          {errors.gender && (
+            <p className="error">{errors.gender.message}</p>
+          )}
+        </div>
 
-                    <p className="login-text">
-                        Already have an account?
-                        <Link to="/login"> Login</Link>
-                    </p>
+        {/* Password */}
+        <TextInput
+          type="password"
+          name="password"
+          placeholder="Password"
+          iconClass="lock-icon"
+          register={register}
+          error={errors.password}
+        />
 
-                </form>
-            </div>
-        
-        </>
-    );
+        <TextInput
+          type="password"
+          name="confirmPassword"
+          placeholder="Confirm password"
+          iconClass="lock-icon"
+          register={register}
+          error={errors.confirmPassword}
+        />
+
+        {/* Buttons */}
+        <div className="button-wrapper">
+          <Button type="submit" variant="secondary">
+            Register
+          </Button>
+        </div>
+
+        <p className="login-text">
+          Already have an account?
+          <Link to="/login"> Login</Link>
+        </p>
+      </form>
+    </div>
+  );
 }
