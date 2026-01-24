@@ -127,6 +127,7 @@ export default function Add() {
             <TextInput
               name="zip"
               label="ZIP Code"
+              integerOnly
               register={register}
               error={errors.zip}
             />
@@ -224,6 +225,8 @@ export default function Add() {
             <TextInput
               name="year"
               label="Year Built"
+              integerOnly
+              maxDigits={4}
               register={register}
               error={errors.year}
             />
@@ -231,6 +234,8 @@ export default function Add() {
             <TextInput
               name="level"
               label="Number of Levels"
+              integerOnly
+              maxDigits={2}
               register={register}
               error={errors.level}
             />
@@ -239,6 +244,8 @@ export default function Add() {
               <TextInput
                 name="bed"
                 label="Bedroom"
+                integerOnly
+                maxDigits={2}
                 register={register}
                 error={errors.bed}
               />
@@ -246,6 +253,8 @@ export default function Add() {
               <TextInput
                 name="bath"
                 label="Bathroom"
+                integerOnly
+                maxDigits={2}
                 register={register}
                 error={errors.bath}
               />
@@ -253,6 +262,8 @@ export default function Add() {
               <TextInput
                 name="kitchen"
                 label="Kitchen"
+                integerOnly
+                maxDigits={2}
                 register={register}
                 error={errors.kitchen}
               />
