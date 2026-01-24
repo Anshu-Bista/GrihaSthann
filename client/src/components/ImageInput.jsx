@@ -6,7 +6,6 @@ export function ImageInput({
   label,
   register,
   error,
-  required = false,
   multiple = false,
 }) {
   const [files, setFiles] = useState([]);
@@ -74,7 +73,7 @@ export function ImageInput({
           type="file"
           accept="image/*"
           multiple={multiple}
-          {...register(name, { required })}
+          {...register(name)}
           onChange={handlePreview}
           className="hidden"
         />

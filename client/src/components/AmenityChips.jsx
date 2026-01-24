@@ -21,7 +21,7 @@ export function AmenityChips({
     setSelected(updated);
 
     // Sync with react-hook-form
-    setValue(name, updated);
+    setValue(name, updated, {shouldValidate: true});
   };
 
   return (

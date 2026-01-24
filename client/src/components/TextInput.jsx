@@ -6,7 +6,8 @@ export function TextInput({
   iconClass,
   register,
   error,
-  required = false,
+  multiline = false,   
+  rows = 4,             // Default height for multiline
 }) {
   return (
     <div className="flex flex-col space-y-1">
@@ -21,21 +22,35 @@ export function TextInput({
         </label>
       )}
 
-      {/* Input */}
+      {/* Input / Textarea */}
       <div className="input-group">
 
         {iconClass && (
           <span className={`icon ${iconClass}`}></span>
         )}
 
-        <input
-          id={name}
-          type={type}
-          placeholder={placeholder}
-          {...register(name, { required })}
-          className="w-full bg-off-white px-4 py-2 border border-sand-beige rounded-lg focus:outline-none
-                     focus:ring-1 focus:ring-gold"
-        />
+        {multiline ? (
+          /* TEXTAREA */
+          <textarea
+            id={name}
+            rows={rows}
+            placeholder={placeholder}
+            {...register(name)}
+            className="w-full bg-off-white px-4 py-2 border border-sand-beige rounded-lg
+                       focus:outline-none focus:ring-1 focus:ring-gold resize-none"
+          />
+        ) : (
+          /* NORMAL INPUT */
+          <input
+            id={name}
+            type={type}
+            placeholder={placeholder}
+            {...register(name)}
+            className="w-full bg-off-white px-4 py-2 border border-sand-beige rounded-lg
+                       focus:outline-none focus:ring-1 focus:ring-gold"
+          />
+        )}
+
       </div>
 
       {/* Error */}

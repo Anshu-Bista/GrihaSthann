@@ -1,9 +1,11 @@
 import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { TextInput } from "../../components/TextInput.jsx";
 import { Button } from "../../components/Button.jsx";
 import { SelectInput } from "../../components/SelectInput.jsx";
 import { ImageInput } from "../../components/ImageInput.jsx";
 import { AmenityChips } from "../../components/AmenityChips.jsx";
+import { propertySchema } from "../../schema/property.schema.js";
 
 export default function Add() {
   const {
@@ -11,7 +13,12 @@ export default function Add() {
     handleSubmit,
     setValue,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    resolver: zodResolver(propertySchema),
+    defaultValues:{
+        amenities:[]
+    },
+  });
 
   const onSubmit = (data) => {
     console.log(data);
@@ -22,17 +29,20 @@ export default function Add() {
   return (
     <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[1200px] mx-auto p-6">
+        
         {/* LEFT SIDE */}
         <div className="flex flex-col space-y-6">
           {/* Basic */}
-          <section className="p-5 border rounded-xl shadow-sm">
+          <section className=" p-5 rounded-xl shadow-sm border border-sand-beige
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-lg hover:border-forest-green/50">
+                    
             <h3 className="font-bold mb-4">Basic Property Details</h3>
             <TextInput
               name="title"
               label="Property Title"
               register={register}
               error={errors.title}
-              required="Title is required"
             />
 
             <SelectInput
@@ -70,15 +80,22 @@ export default function Add() {
             </div>
 
             <TextInput
-              name="description"
-              label="Description"
-              register={register}
-              error={errors.description}
+                name="description"
+                label="Property Description"
+                placeholder="Write details about the property..."
+                register={register}
+                error={errors.description}
+                multiline
+                rows={5}
             />
+
           </section>
 
           {/* Location */}
-          <section className="p-4 border rounded-lg">
+          <section className=" p-5 rounded-xl shadow-sm border border-sand-beige
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-lg hover:border-forest-green/50">
+
             <h3 className="font-bold mb-4">Location Details</h3>
 
             <TextInput
@@ -116,14 +133,16 @@ export default function Add() {
           </section>
 
           {/* Images */}
-          <section className="p-4 border rounded-lg">
+          <section className=" p-5 rounded-xl shadow-sm border border-sand-beige
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-lg hover:border-forest-green/50">
+
             <h3 className="font-bold mb-2">Image Section</h3>
             <ImageInput
               name="propertyImage"
               register={register}
               error={errors.propertyImage}
               multiple
-              required="Please upload an image"
             />
           </section>
         </div>
@@ -131,7 +150,10 @@ export default function Add() {
         {/* RIGHT SIDE */}
         <div className="flex flex-col space-y-6">
           {/* Amenities */}
-          <section className="p-4 border rounded-lg">
+          <section className=" p-5 rounded-xl shadow-sm border border-sand-beige
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-lg hover:border-forest-green/50">
+
             <h3 className="font-bold mb-2">Amenities Section</h3>
             <AmenityChips
                 name="amenities"
@@ -154,7 +176,10 @@ export default function Add() {
           </section>
 
           {/* Lease */}
-          <section className="p-4 border rounded-lg">
+          <section className=" p-5 rounded-xl shadow-sm border border-sand-beige
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-lg hover:border-forest-green/50">
+
             <h3 className="font-bold mb-2">Lease & Furnishing</h3>
             <SelectInput
               name="leaseType"
@@ -191,7 +216,10 @@ export default function Add() {
           </section>
 
           {/* Property Info */}
-          <section className="p-4 border rounded-lg">
+          <section className=" p-5 rounded-xl shadow-sm border border-sand-beige
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-lg hover:border-forest-green/50">
+
             <h3 className="font-bold mb-4">Property Information</h3>
             <TextInput
               name="year"
@@ -232,7 +260,7 @@ export default function Add() {
           </section>
 
           {/* Submit */}
-          <div className="button-wrapper self-end">
+          <div className="sticky bottom-4 self-end bg-mint-green p-3 rounded-xl">
             <Button type="submit" variant="secondary">
               Register
             </Button>
