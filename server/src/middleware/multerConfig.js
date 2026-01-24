@@ -1,14 +1,36 @@
 import multer from "multer";
 import path from "path";
+import fs from "fs";
 
-//Set up storage engine
-const storage= multer.diskStorage({
-    destination:(req, file, cb)=>{
-        cb(null, "uploads/");
-    },
-    filename:(req, file, cb)=>{
-        cb(null, Date.now()+path.extname(file.originalname));
-    },
+// Dynamic storage
+const storage = multer.diskStorage({
+
+  destination: (req, file, cb) => {
+
+    let folder = "uploads/others";
+
+    // If uploading property images
+    if (req.baseUrl.includes("properties")) {
+      folder = "uploads/properties";
+    }
+
+    // If uploading user images (future)
+    if (req.baseUrl.includes("users")) {
+      folder = "uploads/users";
+    }
+
+    // Create folder if not exists
+    if (!fs.existsSync(folder)) {
+      fs.mkdirSync(folder, { recursive: true });
+    }
+
+    cb(null, folder);
+  },
+
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
+
 });
 
 //File filter to allow only specific file types

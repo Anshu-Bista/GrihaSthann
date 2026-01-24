@@ -27,8 +27,10 @@ export const createProperty = async (req, res) => {
       const parsed = propertySchema.parse(data);
   
       // Images
-      const images = req.files.map((f) => f.path);
-  
+      const images = req.files.map((f) =>
+        f.path.replace(/\\/g, "/")
+      );
+      
       const property = await Property.create({
         ...parsed,
         images,

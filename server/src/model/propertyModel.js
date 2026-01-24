@@ -64,8 +64,7 @@ export const Property = sequelize.define("Property", {
 
   /* AMENITIES */
   amenities: {
-    type: DataTypes.ARRAY(DataTypes.STRING),
-    allowNull: false,
+    type: DataTypes.JSON,
   },
 
   /* LEASE INFO */
