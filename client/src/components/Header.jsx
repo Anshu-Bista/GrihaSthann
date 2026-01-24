@@ -1,13 +1,20 @@
 import { Link } from "react-router-dom";
 import logo from "../assets/Logo.png";
 import { useAuth } from "../context/AuthContext";
+import { useEffect } from "react";
 
-export function Header({ role }) {
-  const { token } = useAuth();
+export function Header() {
+  const { token, user } = useAuth();
   const isLoggedIn = Boolean(token);
+  const role = user?.role;
 
   const logoLink = isLoggedIn ? "/home" : "/";
 
+  //notifies when Header changes
+  useEffect(() => {
+    console.log("Header role:", role);
+  }, [role]);
+  
   return (
     <header className="h-16 px-8 flex items-center justify-between bg-soft-olive border-b border-black/10 relative">
       

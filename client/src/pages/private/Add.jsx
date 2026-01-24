@@ -1,160 +1,206 @@
 import { useForm } from "react-hook-form";
-import { TextInput } from "../components/TextInput";
+import { TextInput } from "../../components/TextInput.jsx";
+import { Button } from "../../components/Button.jsx";
+import { SelectInput } from "../../components/SelectInput.jsx";
 
-export default function Add(){
-    const {
-        register,
-        handleSubmit,
-        formState: { errors }
-      } = useForm();
-    
-      const onSubmit = (data) => {
-        console.log(data);
-      };
-    return(
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div class="flex flex-column space-y-6">
+export default function Add() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
 
-                <section class="p-4 border rounded-lg">
-                    <h3 class="font-bold mb-2">Basic Property Details</h3>
+  const onSubmit = (data) => {
+    console.log(data);
+  };
 
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                    Property Title
-                    </label>
-                    <TextInput 
-                    name="title"
-                    register={register}
-                    error={errors.name}
-                    />
+  return (
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <div className="flex flex-col p-4 space-y-6">
+        {/* Basic Details */}
+        <section className="p-4 border rounded-lg">
+          <h3 className="font-bold mb-4">Basic Property Details</h3>
 
-                    <div className="flex felx-row">
-                        <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Price per Month
-                        </label>
-                        <TextInput 
-                        name="price"
-                        type="number"
-                        register={register}
-                        error={errors.price}
-                        />
-                        <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Total Area
-                        </label>
-                        <TextInput name="area"
-                        type="number"
-                        register={register}
-                        error={errors.area}
-                        />
-                    </div>
+          <TextInput
+            name="title"
+            label="Property Title"
+            register={register}
+            error={errors.title}
+            required="Title is required"
+          />
 
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Description
-                    </label>
-                    <TextInput name="area"
-                    type="number"
-                    register={register}
-                    error={errors.area}
-                    />
-                </section>
+          <SelectInput
+            name="propertyType"
+            label="Property Type"
+            register={register}
+            error={errors.propertyType}
+            options={[
+              { value: "room", label: "Room" },
+              { value: "apartment", label: "Apartment" },
+              { value: "house", label: "House" },
+              { value: "commercial", label: "Commercial" },
+              { value: "villa", label: "Villa" },
+              { value: "office", label: "Office" }, 
+              { value: "warehouse", label: "Warehouse" }, 
+            ]}
+          />
 
-                <section class="p-4 border rounded-lg">
-                    <h3 class="font-bold mb-2">Amenities Section</h3>   
-                </section>
+          <div className="flex flex-row gap-4">
+            <TextInput
+              name="price"
+              type="number"
+              label="Price per Month"
+              register={register}
+              error={errors.price}
+            />
 
-                <section class="p-4 border rounded-lg">
-                    <h3 class="font-bold mb-2">Location Details</h3> 
+            <TextInput
+              name="area"
+              type="number"
+              label="Total Area"
+              register={register}
+              error={errors.area}
+            />
+          </div>
 
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                    Area
-                    </label>
-                    <TextInput 
-                    name="area"
-                    register={register}
-                    error={errors.area}
-                    />
+          <TextInput
+            name="description"
+            label="Description"
+            register={register}
+            error={errors.description}
+          />
+        </section>
 
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                    Street Address
-                    </label>
-                    <TextInput 
-                    name="street"
-                    register={register}
-                    error={errors.street}
-                    />
+        {/* Amenities */}
+        <section className="p-4 border rounded-lg">
+          <h3 className="font-bold mb-2">Amenities Section</h3>
+        </section>
 
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                    ZIP Code
-                    </label>
-                    <TextInput 
-                    name="street"
-                    register={register}
-                    error={errors.street}
-                    />
+        {/* Location */}
+        <section className="p-4 border rounded-lg">
+          <h3 className="font-bold mb-4">Location Details</h3>
 
-                </section>
-                
-                <section class="p-4 border rounded-lg">
-                    <h3 class="font-bold mb-2">Lease and Furnishing Details</h3>   
-                </section>
+          <TextInput
+            name="locationArea"
+            label="Area"
+            register={register}
+            error={errors.locationArea}
+          />
 
-                <section class="p-4 border rounded-lg">
-                    <h3 class="font-bold mb-2">Property Information</h3>
+          <SelectInput
+            name="city"
+            label="City"
+            register={register}
+            error={errors.city}
+            options={[
+              { value: "lalitpur", label: "Lalitpur" },
+              { value: "kathmandu", label: "Kathmandu" },
+              { value: "bhaktapur", label: "Bhaktapur" }
+            ]}
+          />
 
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                    Year Built
-                    </label>
-                    <TextInput 
-                    name="year"
-                    register={register}
-                    error={errors.area}
-                    />
+          <TextInput
+            name="street"
+            label="Street Address"
+            register={register}
+            error={errors.street}
+          />
 
-                    <label class="block text-sm font-medium text-gray-600 mb-1">
-                    Number of Levels
-                    </label>
-                    <TextInput 
-                    name="level"
-                    register={register}
-                    error={errors.level}
-                    />
+          <TextInput
+            name="zip"
+            label="ZIP Code"
+            register={register}
+            error={errors.zip}
+          />
+        </section>
 
-                    <div class="flex flex-row">
-                        <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Bedroom
-                        </label>
-                        <TextInput 
-                        name="bed"
-                        register={register}
-                        error={errors.bed}
-                        />
+        {/* Lease */}
+        <section className="p-4 border rounded-lg">
+          <h3 className="font-bold mb-2">Lease and  Furnishing Details</h3>
+          <SelectInput
+            name="leaseType"
+            label="Lease Type"
+            register={register}
+            error={errors.leaseType}
+            options={[
+              { value: "short", label: "Short-term" },
+              { value: "long", label: "Long-term" },
+            ]}
+          />
 
-                        <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Bathroom
-                        </label>
-                        <TextInput 
-                        name="bath"
-                        register={register}
-                        error={errors.bath}
-                        />
+            <SelectInput
+            name="tenantType"
+            label="Tenant Type"
+            register={register}
+            error={errors.tenantType}
+            options={[
+              { value: "family", label: "Family" },
+              { value: "solo", label: "Solo" },
+            ]}
+          />
 
-                        <label class="block text-sm font-medium text-gray-600 mb-1">
-                        Kitchen
-                        </label>
-                        <TextInput 
-                        name="kitchen"
-                        register={register}
-                        error={errors.kitchen}
-                        />
-                    </div>
-  
-                </section>
-                <div className="button-wrapper">
-                    <Button type="submit" variant="secondary">
-                        Register
-                    </Button>
-                </div>
-            </div>
-            
-        </form>
-    )
+            <SelectInput
+            name="furnishingStatus"
+            label="Furnishing Status"
+            register={register}
+            error={errors.furnishingStatus}
+            options={[
+              { value: "yes", label: "Furnished" },
+              { value: "no", label: "Unfurnished" },
+            ]}
+          />
+
+        </section>
+
+        {/* Property Info */}
+        <section className="p-4 border rounded-lg">
+          <h3 className="font-bold mb-4">Property Information</h3>
+
+          <TextInput
+            name="year"
+            label="Year Built"
+            register={register}
+            error={errors.year}
+          />
+
+          <TextInput
+            name="level"
+            label="Number of Levels"
+            register={register}
+            error={errors.level}
+          />
+
+          <div className="flex flex-row gap-4">
+            <TextInput
+              name="bed"
+              label="Bedroom"
+              register={register}
+              error={errors.bed}
+            />
+
+            <TextInput
+              name="bath"
+              label="Bathroom"
+              register={register}
+              error={errors.bath}
+            />
+
+            <TextInput
+              name="kitchen"
+              label="Kitchen"
+              register={register}
+              error={errors.kitchen}
+            />
+          </div>
+        </section>
+
+        {/* Submit */}
+        <div className="button-wrapper">
+          <Button type="submit" variant="secondary">
+            Register
+          </Button>
+        </div>
+      </div>
+    </form>
+  );
 }
