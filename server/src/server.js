@@ -8,6 +8,7 @@ import "./model/userModel.js";
 import { authRouter } from "./routes/authRoutes.js";
 import { uploadRouter } from "./routes/uploadRoutes.js";
 import { userRouter } from "./routes/userRoutes.js";
+import { propertyRouter } from "./routes/propertyRoutes.js";
 import { createAdminIfNotExists } from "./model/createAdmin.js";
 
 const app = express();
@@ -22,6 +23,7 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use("/uploads", express.static("uploads"));
 
 const startServer = async () => {
   try {
@@ -39,6 +41,7 @@ const startServer = async () => {
     app.use("/api/auth", authRouter);
     app.use("/api/file", uploadRouter);
     app.use("/api/users", userRouter);
+    app.use("/api/properties", propertyRouter);
 
     app.get("/", (req, res) => {
       res.send("Application is running");

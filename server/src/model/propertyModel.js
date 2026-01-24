@@ -52,7 +52,7 @@ export const Property = sequelize.define("Property", {
   },
 
   zip: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
 

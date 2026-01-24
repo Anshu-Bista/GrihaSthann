@@ -1,14 +1,14 @@
 import { useState } from "react";
-import cameraIcon from "../assets/camera.png"; // adjust path
+import cameraIcon from "../assets/camera.png";
 
 export function ImageInput({
   name,
   label,
-  register,
+  value,
+  onChange,
   error,
   multiple = false,
 }) {
-  const [files, setFiles] = useState([]);
   const [previews, setPreviews] = useState([]);
 
   const handlePreview = (e) => {
@@ -20,34 +20,35 @@ export function ImageInput({
       URL.createObjectURL(file)
     );
 
-    setFiles(selectedFiles);
     setPreviews(urls);
+
+    // ✅ Send files to RHF
+    onChange(e.target.files);
   };
 
-  // ❌ Remove image
   const removeImage = (index) => {
-    const newFiles = [...files];
     const newPreviews = [...previews];
-
-    // Free memory
-    URL.revokeObjectURL(newPreviews[index]);
-
-    newFiles.splice(index, 1);
     newPreviews.splice(index, 1);
 
-    setFiles(newFiles);
     setPreviews(newPreviews);
+
+    // Rebuild FileList
+    const dt = new DataTransfer();
+
+    if (value) {
+      Array.from(value).forEach((file, i) => {
+        if (i !== index) dt.items.add(file);
+      });
+    }
+
+    onChange(dt.files);
   };
 
   return (
     <div className="flex flex-col space-y-2">
 
-      {/* Label */}
       {label && (
-        <label
-          htmlFor={name}
-          className="text-sm font-medium text-gray-600"
-        >
+        <label className="text-sm font-medium text-gray-600">
           {label}
         </label>
       )}
@@ -67,13 +68,11 @@ export function ImageInput({
           p-4
         "
       >
-        {/* Hidden Input */}
         <input
           id={name}
           type="file"
           accept="image/*"
           multiple={multiple}
-          {...register(name)}
           onChange={handlePreview}
           className="hidden"
         />
@@ -89,27 +88,18 @@ export function ImageInput({
         </p>
       </label>
 
-      {/* Preview With Delete */}
+      {/* Preview */}
       {previews.length > 0 && (
         <div className="flex gap-3 flex-wrap mt-2">
           {previews.map((src, i) => (
-            <div
-              key={i}
-              className="relative w-24 h-24"
-            >
-              {/* Image */}
+            <div key={i} className="relative w-24 h-24">
+
               <img
                 src={src}
                 alt="Preview"
-                className="
-                  w-full h-full
-                  object-cover
-                  rounded-lg
-                  border
-                "
+                className="w-full h-full object-cover rounded-lg border"
               />
 
-              {/* Delete Button */}
               <button
                 type="button"
                 onClick={() => removeImage(i)}
@@ -124,12 +114,12 @@ export function ImageInput({
               >
                 ✕
               </button>
+
             </div>
           ))}
         </div>
       )}
 
-      {/* Error */}
       {error && (
         <p className="text-red-500 text-xs">
           {error.message || "Image is required"}

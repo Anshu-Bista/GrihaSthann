@@ -1,5 +1,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+import { Controller } from "react-hook-form";
+
+import { apiUpload } from "../../utils/api.js"; 
 import { TextInput } from "../../components/TextInput.jsx";
 import { Button } from "../../components/Button.jsx";
 import { SelectInput } from "../../components/SelectInput.jsx";
@@ -12,18 +16,81 @@ export default function Add() {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(propertySchema),
-    defaultValues:{
-        amenities:[]
+    defaultValues: {
+      amenities: [],
+      propertyImage: [],
+      leaseType: "",
+      tenantType: "",
+      furnishingStatus: "",
+      status: "active",
+      viewCount: 0,
+      saveCount: 0,
     },
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    console.log(data.propertyImage[0]);
-    console.log(data.amenities);
+  const onSubmit = async (data) => {
+      console.log(data);
+      console.log(data.propertyImage?.[0]);
+      console.log(data.amenities);
+    try {
+      const formData = new FormData();
+
+      // Append normal fields
+      Object.keys(data).forEach((key) => {
+        if (key === "propertyImage" || key === "amenities") return;
+      
+        if (
+          ["price", "area", "yearBuilt", "level", "bed", "bath", "kitchen"].includes(key)
+        ) {
+          formData.append(key, Number(data[key]));
+        } else {
+          formData.append(
+            key,
+            data[key] !== undefined && data[key] !== null
+              ? data[key]
+              : ""
+          );
+        }
+      });      
+
+      // Append images
+      if (data.propertyImage?.length) {
+        Array.from(data.propertyImage).forEach((file) => {
+          formData.append("images", file);
+        });
+      }
+      
+
+      // Append amenities
+      data.amenities.forEach((a) => {
+        formData.append("amenities", a);
+      });
+      
+
+      // Show loading toast
+      const toastId = toast.loading("Adding property...");
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+      await apiUpload("/properties", formData);
+
+      toast.success("Property added successfully ✅", {
+        id: toastId,
+      });
+
+      // Optional: reset form / redirect
+      // reset();
+      // navigate("/admin/properties");
+
+    } catch (err) {
+      console.error(err);
+
+      toast.error(err.message || "Failed to add property ❌");
+    }
   };
 
   return (
@@ -139,12 +206,21 @@ export default function Add() {
                 hover:-translate-y-1 hover:shadow-lg hover:border-forest-green/50">
 
             <h3 className="font-bold mb-2">Image Section</h3>
-            <ImageInput
+            <Controller
               name="propertyImage"
-              register={register}
-              error={errors.propertyImage}
-              multiple
+              control={control}
+              defaultValue={[]}
+              render={({ field }) => (
+                <ImageInput
+                  name={field.name}
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={errors.propertyImage}
+                  multiple
+                />
+              )}
             />
+
           </section>
         </div>
 
@@ -223,12 +299,12 @@ export default function Add() {
 
             <h3 className="font-bold mb-4">Property Information</h3>
             <TextInput
-              name="year"
+              name="yearBuilt"
               label="Year Built"
               integerOnly
               maxDigits={4}
               register={register}
-              error={errors.year}
+              error={errors.yearBuilt}
             />
 
             <TextInput
