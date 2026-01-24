@@ -3,17 +3,20 @@ import { TextInput } from "../../components/TextInput.jsx";
 import { Button } from "../../components/Button.jsx";
 import { SelectInput } from "../../components/SelectInput.jsx";
 import { ImageInput } from "../../components/ImageInput.jsx";
+import { AmenityChips } from "../../components/AmenityChips.jsx";
 
 export default function Add() {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
 
   const onSubmit = (data) => {
     console.log(data);
     console.log(data.propertyImage[0]);
+    console.log(data.amenities);
   };
 
   return (
@@ -22,7 +25,7 @@ export default function Add() {
         {/* LEFT SIDE */}
         <div className="flex flex-col space-y-6">
           {/* Basic */}
-          <section className="p-4 border rounded-lg">
+          <section className="p-5 border rounded-xl shadow-sm">
             <h3 className="font-bold mb-4">Basic Property Details</h3>
             <TextInput
               name="title"
@@ -115,10 +118,8 @@ export default function Add() {
           {/* Images */}
           <section className="p-4 border rounded-lg">
             <h3 className="font-bold mb-2">Image Section</h3>
-
             <ImageInput
               name="propertyImage"
-              label="Property Image"
               register={register}
               error={errors.propertyImage}
               multiple
@@ -132,6 +133,24 @@ export default function Add() {
           {/* Amenities */}
           <section className="p-4 border rounded-lg">
             <h3 className="font-bold mb-2">Amenities Section</h3>
+            <AmenityChips
+                name="amenities"
+                register={register}
+                setValue={setValue}
+                error={errors.amenities}
+                options={[
+                { value: "wifi", label: "WiFi" },
+                { value: "parking", label: "Parking" },
+                { value: "ac", label: "AC" },
+                { value: "lift", label: "Lift" },
+                { value: "gym", label: "Gym" },
+                { value: "water", label: "24/7 Water" },
+                { value: "security", label: "Security" },
+                { value: "cctv", label: "CCTV" },
+                { value: "balcony", label: "Balcony" },
+                { value: "furnished", label: "Furnished" },
+                ]}
+            />
           </section>
 
           {/* Lease */}

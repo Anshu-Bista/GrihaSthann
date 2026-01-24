@@ -33,8 +33,8 @@ export function TextInput({
           type={type}
           placeholder={placeholder}
           {...register(name, { required })}
-          className="w-full px-4 py-2 border rounded-lg focus:outline-none
-                     focus:ring-1 focus:ring-forest-green"
+          className="w-full bg-off-white px-4 py-2 border border-sand-beige rounded-lg focus:outline-none
+                     focus:ring-1 focus:ring-gold"
         />
       </div>
 
