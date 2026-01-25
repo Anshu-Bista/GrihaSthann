@@ -3,7 +3,7 @@ import { sequelize } from "../database/db.js";
 
 export const Property = sequelize.define("Property", {
 
-  id: {
+  propertyId: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
