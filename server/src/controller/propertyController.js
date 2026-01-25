@@ -59,3 +59,61 @@ export const createProperty = async (req, res) => {
     
   };
   
+  export const getProperties = async (req, res) => {
+    try {
+  
+      const properties = await Property.findAll({
+        order: [["createdAt", "DESC"]], // latest first (optional)
+      });
+  
+      res.status(200).json({
+        success: true,
+        count: properties.length,
+        data: properties,
+      });
+  
+    } catch (err) {
+  
+      console.error("Get properties error:", err);
+  
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch properties",
+        error: err.message,
+      });
+    }
+  };
+
+  export const getPropertyById = async (req, res) => {
+    try {
+  
+      const { id } = req.params;
+  
+      const property = await Property.findOne({
+        where: { propertyId: id }, // or id depending on DB
+      });
+  
+      if (!property) {
+        return res.status(404).json({
+          success: false,
+          message: "Property not found",
+        });
+      }
+  
+      res.status(200).json({
+        success: true,
+        data: property,
+      });
+  
+    } catch (err) {
+  
+      console.error("Get property by ID error:", err);
+  
+      res.status(500).json({
+        success: false,
+        message: "Failed to fetch property",
+        error: err.message,
+      });
+    }
+  };
+  
