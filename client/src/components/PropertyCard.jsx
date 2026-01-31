@@ -17,6 +17,9 @@ export default function PropertyCard({ item }) {
         bg-soft-purple
         shadow-md
         overflow-hidden
+        rounded-xl
+        w-full
+        max-w-[340px]
       "
     >
       {/* Image (No Padding) */}
@@ -29,19 +32,21 @@ export default function PropertyCard({ item }) {
       {/* Content */}
       <div
         className="
-        px-[25px]
-        pt-8
-        pb-2
-        flex
-        flex-col
+          px-4 sm:px-5 lg:px-[20px]
+          pt-6 sm:pt-7 lg:pt-8
+          pb-2
+          flex
+          flex-col
         "
       >
         {/* Price + Favorite */}
-        <div className="flex justify-between items-start">
-          <p className="text-old text-gold font-bold text-[24px]">
+        <div className="flex justify-between items-center">
+          <p className="text-gold font-bold text-[24px]">
             {item.price || "0"}
 
-            <span className="text-[16px] text-dark-grey font-normal ml-1">/ month</span>
+            <span className="text-[16px] text-dark-grey font-normal ml-1">
+              / month
+            </span>
           </p>
 
           <div
@@ -52,6 +57,9 @@ export default function PropertyCard({ item }) {
               flex
               items-center
               justify-center
+              cursor-pointer
+              hover:scale-105
+              transition
             "
           >
             <img src={favourite} alt="Favourite" className="w-4 h-4" />
@@ -62,21 +70,22 @@ export default function PropertyCard({ item }) {
         <h3
           className="
             mt-2
-            text-[24px]
+            text-[22px] sm:text-[24px]
             font-bold
             text-forest-green
+            leading-tight
           "
         >
           {item.title}
         </h3>
 
-        {/* Location (32px margin bottom) */}
+        {/* Location */}
         <p
           className="
-            text-[16px]
+            text-[14px] sm:text-[16px]
             text-dark-grey
             mt-1
-            mb-8
+            mb-4 sm:mb-6 lg:mb-8
           "
         >
           {item.street}, {item.locationArea}, {item.city}
@@ -86,31 +95,29 @@ export default function PropertyCard({ item }) {
         <div
           className="
             flex
-            gap-4
-            text-[14px]
+            flex-wrap
+            gap-3 sm:gap-4
+            text-[13px] sm:text-[14px]
             text-gray-700
             font-medium
           "
         >
           {/* Bed */}
           <div className="flex items-center gap-1">
-            <img src={bed} alt="Bed" className="w-4 h-4 font-bold" />
-
+            <img src={bed} alt="Bed" className="w-4 h-4" />
             <span>{item.bed} Bedrooms</span>
           </div>
 
           {/* Bath */}
           <div className="flex items-center gap-1">
-            <img src={bath} alt="Bath" className="w-4 h-4 font-bold" />
-
+            <img src={bath} alt="Bath" className="w-4 h-4" />
             <span>{item.bath} Bathrooms</span>
           </div>
 
           {/* Area */}
           <div className="flex items-center gap-1">
-            <img src={area} alt="Area" className="w-4 h-4 font-bold" />
-
-            <span>{item.area} m. sq.</span>
+            <img src={area} alt="Area" className="w-4 h-4" />
+            <span>{item.area} m²</span>
           </div>
         </div>
       </div>
