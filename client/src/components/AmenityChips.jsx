@@ -3,31 +3,44 @@ import { useState } from "react";
 export function AmenityChips({
   name,
   options = [],
+  value = [],       
+  onChange, 
   register,
   setValue,
   error,
+  allowCustom = true, // 👈 Control add/delete
 }) {
   const [selected, setSelected] = useState([]);
   const [customOptions, setCustomOptions] = useState([]);
   const [showInput, setShowInput] = useState(false);
   const [newAmenity, setNewAmenity] = useState("");
 
-  const allOptions = [...options, ...customOptions];
+  // Only include custom options if allowed
+  const allOptions = allowCustom
+    ? [...options, ...customOptions]
+    : options;
 
   // Toggle select/unselect
-  const toggleAmenity = (value) => {
+  const toggleAmenity = (val) => {
     let updated;
-
-    if (selected.includes(value)) {
-      updated = selected.filter((v) => v !== value);
+  
+    if (value.includes(val)) {
+      updated = value.filter((v) => v !== val);
     } else {
-      updated = [...selected, value];
+      updated = [...value, val];
     }
-
-    setSelected(updated);
-    setValue(name, updated, { shouldValidate: true });
+  
+    // For filter page
+    if (onChange) {
+      onChange(updated);
+    }
+  
+    // For forms (admin page)
+    if (setValue) {
+      setValue(name, updated, { shouldValidate: true });
+    }
   };
-
+  
   // Add custom amenity
   const handleAddAmenity = () => {
     if (!newAmenity.trim()) return;
@@ -53,9 +66,12 @@ export function AmenityChips({
     const updated = [...selected, value];
 
     setSelected(updated);
-    setValue(name, updated, {
-      shouldValidate: true,
-    });
+
+    if (setValue) {
+      setValue(name, updated, {
+        shouldValidate: true,
+      });
+    }
 
     setNewAmenity("");
     setShowInput(false);
@@ -63,20 +79,21 @@ export function AmenityChips({
 
   // Delete custom amenity
   const deleteAmenity = (value) => {
-    // Remove from custom list
     setCustomOptions((prev) =>
       prev.filter((c) => c.value !== value)
     );
 
-    // Remove from selected
     const updated = selected.filter(
       (v) => v !== value
     );
 
     setSelected(updated);
-    setValue(name, updated, {
-      shouldValidate: true,
-    });
+
+    if (setValue) {
+      setValue(name, updated, {
+        shouldValidate: true,
+      });
+    }
   };
 
   return (
@@ -86,7 +103,7 @@ export function AmenityChips({
       <div className="flex flex-wrap gap-3 items-center">
 
         {allOptions.map((opt) => {
-          const active = selected.includes(opt.value);
+          const active = value.includes(opt.value);
 
           const isCustom = customOptions.some(
             (c) => c.value === opt.value
@@ -117,7 +134,7 @@ export function AmenityChips({
               </button>
 
               {/* Delete Button (Custom Only) */}
-              {isCustom && (
+              {allowCustom && isCustom && (
                 <button
                   type="button"
                   onClick={(e) => {
@@ -142,7 +159,7 @@ export function AmenityChips({
         })}
 
         {/* Add Button */}
-        {!showInput && (
+        {allowCustom && !showInput && (
           <button
             type="button"
             onClick={() => setShowInput(true)}
@@ -155,7 +172,7 @@ export function AmenityChips({
         )}
 
         {/* Input Box */}
-        {showInput && (
+        {allowCustom && showInput && (
           <div className="flex items-center gap-2">
 
             <input
@@ -192,11 +209,13 @@ export function AmenityChips({
 
       </div>
 
-      {/* Hidden Input */}
-      <input
-        type="hidden"
-        {...register(name)}
-      />
+      {/* Hidden Input (for forms) */}
+      {register && (
+        <input
+          type="hidden"
+          {...register(name)}
+        />
+      )}
 
       {/* Error */}
       {error && (

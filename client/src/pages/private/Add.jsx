@@ -10,6 +10,16 @@ import { SelectInput } from "../../components/SelectInput.jsx";
 import { ImageInput } from "../../components/ImageInput.jsx";
 import { AmenityChips } from "../../components/AmenityChips.jsx";
 import { propertySchema } from "../../schema/property.schema.js";
+import {
+  cityOptions,
+  adminPropertyTypeOptions,
+  furnishingOptions,
+  leaseOptions,
+  tenantOptions,
+  amenityOptions
+} from "../../utils/filterOptions";
+
+import { useNavigate } from "react-router-dom";
 
 export default function Add() {
   const {
@@ -31,6 +41,8 @@ export default function Add() {
       saveCount: 0,
     },
   });
+  
+  const navigate = useNavigate();
 
   const onSubmit = async (data) => {
       console.log(data);
@@ -84,7 +96,7 @@ export default function Add() {
 
       // Optional: reset form / redirect
       // reset();
-      // navigate("/admin/properties");
+      navigate("/admin/properties");
 
     } catch (err) {
       console.error(err);
@@ -117,15 +129,7 @@ export default function Add() {
               label="Property Type"
               register={register}
               error={errors.propertyType}
-              options={[
-                { value: "room", label: "Room" },
-                { value: "apartment", label: "Apartment" },
-                { value: "house", label: "House" },
-                { value: "commercial", label: "Commercial" },
-                { value: "villa", label: "Villa" },
-                { value: "office", label: "Office" },
-                { value: "warehouse", label: "Warehouse" },
-              ]}
+              options={adminPropertyTypeOptions}
             />
 
             <div className="flex flex-row gap-4">
@@ -177,11 +181,7 @@ export default function Add() {
               label="City"
               register={register}
               error={errors.city}
-              options={[
-                { value: "lalitpur", label: "Lalitpur" },
-                { value: "kathmandu", label: "Kathmandu" },
-                { value: "bhaktapur", label: "Bhaktapur" },
-              ]}
+              options={cityOptions.filter((o) => o.value !== "")}
             />
 
             <TextInput
@@ -233,23 +233,14 @@ export default function Add() {
 
             <h3 className="font-bold mb-2">Amenities Section</h3>
             <AmenityChips
-                name="amenities"
-                register={register}
-                setValue={setValue}
-                error={errors.amenities}
-                options={[
-                { value: "wifi", label: "WiFi" },
-                { value: "parking", label: "Parking" },
-                { value: "ac", label: "AC" },
-                { value: "lift", label: "Lift" },
-                { value: "gym", label: "Gym" },
-                { value: "water", label: "24/7 Water" },
-                { value: "security", label: "Security" },
-                { value: "cctv", label: "CCTV" },
-                { value: "balcony", label: "Balcony" },
-                { value: "furnished", label: "Furnished" },
-                ]}
+              name="amenities"
+              register={register}
+              setValue={setValue}
+              error={errors.amenities}
+              options={amenityOptions}
+              allowCustom={true}
             />
+
           </section>
 
           {/* Lease */}
@@ -263,10 +254,7 @@ export default function Add() {
               label="Lease Type"
               register={register}
               error={errors.leaseType}
-              options={[
-                { value: "short", label: "Short-term" },
-                { value: "long", label: "Long-term" },
-              ]}
+              options={leaseOptions.filter((o) => o.value !== "")}
             />
 
             <SelectInput
@@ -274,10 +262,7 @@ export default function Add() {
               label="Tenant Type"
               register={register}
               error={errors.tenantType}
-              options={[
-                { value: "family", label: "Family" },
-                { value: "solo", label: "Solo" },
-              ]}
+              options={tenantOptions}
             />
 
             <SelectInput
@@ -285,10 +270,7 @@ export default function Add() {
               label="Furnishing Status"
               register={register}
               error={errors.furnishingStatus}
-              options={[
-                { value: "yes", label: "Furnished" },
-                { value: "no", label: "Unfurnished" },
-              ]}
+              options={furnishingOptions.filter((o) => o.value !== "")}
             />
           </section>
 
