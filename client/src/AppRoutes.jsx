@@ -6,6 +6,7 @@ import MainLayout from "./MainLayout.jsx";
 
 const UserHome = React.lazy(() => import("./pages/private/Home.jsx"));
 const UserBrowse = React.lazy(() => import("./pages/private/Browse.jsx"));
+const UserDetail = React.lazy(() => import("./pages/private/Details.jsx"));
 const AdminAdd = React.lazy(() => import("./pages/private/Add.jsx"));
 
 const UserLogin = React.lazy(() => import("./pages/public/Login.jsx"));
@@ -28,6 +29,7 @@ export const AppRoutes = () => {
           <Route element={<PrivateRoute />}>
             <Route path="/home" element={<UserHome />} />
             <Route path="/browse" element={<UserBrowse />} />
+            <Route path="/property/:id" element={<UserDetail />} />
             <Route path="/add" element={<AdminAdd />} />
             {/* add more private pages here */}
           </Route>

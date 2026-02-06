@@ -2,8 +2,17 @@ import favourite from "../assets/favourite.png";
 import bed from "../assets/bed.png";
 import bath from "../assets/shower.png";
 import area from "../assets/area.png";
+import { useNavigate } from "react-router-dom";
 
 export default function PropertyCard({ item }) {
+
+  const navigate = useNavigate();
+
+  // Handle click
+  const handleClick = () => {
+    navigate(`/property/${item.propertyId}`); // or item.id
+  };
+
   // Determine image
   const propertyImage =
     item.images && item.images.length > 0
@@ -12,6 +21,7 @@ export default function PropertyCard({ item }) {
 
   return (
     <div
+      onClick={handleClick}
       className="
         flex flex-col
         bg-soft-purple
@@ -20,6 +30,9 @@ export default function PropertyCard({ item }) {
         rounded-xl
         w-full
         max-w-[340px]
+        cursor-pointer
+        hover::shadow-lg
+        transition
       "
     >
       {/* Image (No Padding) */}
