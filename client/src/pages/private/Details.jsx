@@ -9,7 +9,9 @@ import kitchen from "../../assets/kitchen.png";
 import furniture from "../../assets/furniture.png";
 import category from "../../assets/category.png";
 import area from "../../assets/area.png";
+import time from "../../assets/time.png";
 import favourite from "../../assets/favourite.png";
+import point from "../../assets/point.png";
 import eye from "../../assets/eye.svg";
 
 export default function Details() {
@@ -84,10 +86,25 @@ export default function Details() {
             {property.title}
           </h3>
 
+          {/* Category */}
+          <div className="flex items-center gap-2">
+            <img src={category} alt="Category" className="w-4 h-4" />
+            <span className="capitalize">{property.propertyType}</span>
+          </div>
+
           {/* Location */}
-          <p className="text-[14px] sm:text-[16px] text-dark-grey">
-            {property.street}, {property.locationArea}, {property.city}
-          </p>
+          <div className="flex items-center gap-2">
+            <img
+              src={point}
+              alt="Location"
+              className="w-3 h-4"
+            />
+
+            <p className="text-[14px] sm:text-[16px] text-dark-grey capitalize">
+              {property.street}, {property.locationArea}, {property.city}
+            </p>
+          </div>
+
 
           {/* Status */}
           <div className="flex items-center gap-2">
@@ -120,10 +137,10 @@ export default function Details() {
       <img
         src={propertyImage}
         alt="Property"
-        className="w-full h-[200px] object-cover"
+        className="w-full h-[200px] object-cover mt-5"
       />
       {/* Price */}
-      <p className="text-gold font-bold text-[24px]">
+      <p className="text-gold font-bold text-[24px] mt-5">
         {property.price || "0"}
 
         <span className="text-[16px] text-dark-grey font-normal ml-1">
@@ -132,15 +149,12 @@ export default function Details() {
       </p>
 
       {/* Details + Actions */}
-      <div className="flex justify-between items-start">
+      <div className="flex justify-between items-start mt-2">
         {/* Left Details */}
         <div
           className="
-                grid
-                grid-cols-2
-                sm:grid-cols-3
-                gap-x-4
-                gap-y-2
+                grid grid-cols-2
+                sm:grid-cols-3 gap-x-4 gap-y-2
                 text-[13px] sm:text-[14px]
                 text-gray-700
                 font-medium
@@ -170,16 +184,16 @@ export default function Details() {
             <span>{property.area} m²</span>
           </div>
 
-          {/* Category */}
-          <div className="flex items-center gap-1">
-            <img src={category} alt="Category" className="w-4 h-4" />
-            <span className="capitalize">{property.propertyType}</span>
-          </div>
-
           {/* Furniture */}
           <div className="flex items-center gap-1">
             <img src={furniture} alt="Furniture" className="w-4 h-4" />
             <span>{getFurnishingLabel(property.furnishingStatus)}</span>
+          </div>
+
+          {/* Lease */}
+          <div className="flex items-center gap-1">
+            <img src={time} alt="Furniture" className="w-4 h-4" />
+            <span className="capitalize">{property.leaseType}</span>
           </div>
         </div>
 
@@ -196,6 +210,122 @@ export default function Details() {
           </button>
         </div>
       </div>
+
+      {/*Content */}
+      {/* Description */}
+      <div className="mt-5">
+        <h5 className="text-lg font-semibold mb-1">Description</h5>
+        <p className="text-dark-grey text-sm leading-relaxed">
+          {property.description}
+        </p>
+      </div>
+
+      {/* Key Information */}
+      <div className="mt-5">
+
+        <h5 className="text-lg font-semibold mb-3">Key Information</h5>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-16 gap-y-3">
+
+          {/* Left Column */}
+          <div className="space-y-2">
+
+            <div className="flex items-center gap-4">
+              <p className="text-dark-grey min-w-[130px]">Tenant Type</p>
+              <span className="font-medium capitalize">
+                {property.tenantType || "N/A"}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <p className="text-dark-grey min-w-[130px]">Lease Duration</p>
+              <span className="font-medium capitalize">
+                {property.leaseType || "N/A"}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <p className="text-dark-grey min-w-[130px]">Year Built</p>
+              <span className="font-medium">
+                {property.yearBuilt || "N/A"}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <p className="text-dark-grey min-w-[130px]">Levels</p>
+              <span className="font-medium">
+                {property.level || "N/A"}
+              </span>
+            </div>
+
+          </div>
+
+
+          {/* Right Column */}
+          <div className="space-y-2">
+
+            <div className="flex items-center gap-4">
+              <p className="text-dark-grey min-w-[130px]">City</p>
+              <span className="font-medium capitalize">
+                {property.city || "N/A"}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <p className="text-dark-grey min-w-[130px]">Zip Code</p>
+              <span className="font-medium">
+                {property.zip || "N/A"}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <p className="text-dark-grey min-w-[130px]">Street</p>
+              <span className="font-medium capitalize">
+                {property.street}
+              </span>
+            </div>
+
+            <div className="flex items-center gap-4">
+              <p className="text-dark-grey min-w-[130px]">City</p>
+              <span className="font-medium capitalize">
+                {property.city}
+              </span>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      {/* Amenities */}
+      {property.amenities?.length > 0 && (
+        <div className="mt-6">
+
+          <h5 className="text-lg font-semibold mb-2">Amenities</h5>
+
+          <div className="flex flex-wrap gap-2">
+
+            {property.amenities.map((item, index) => (
+              <span
+                key={index}
+                className="
+                  px-3 py-1
+                  text-sm
+                  rounded-full
+                  bg-soft-purple
+                  text-forest-green
+                  font-medium
+                "
+              >
+                {item}
+              </span>
+            ))}
+
+          </div>
+
+        </div>
+      )}
+
     </div>
   );
 }
