@@ -39,6 +39,11 @@ export const User = sequelize.define("User", {
     role: {
     type: DataTypes.STRING,
     defaultValue: "user"
+    },
+
+    /* IMAGES */
+    profile: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
     }
 });
 
