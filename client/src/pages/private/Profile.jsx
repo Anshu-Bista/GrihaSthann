@@ -1,81 +1,110 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+
 import { Button } from "../../components/Button.jsx";
 import { TextInput } from "../../components/TextInput.jsx";
 import { useApi } from "../../hooks/useAPI.js";
-import "../../css/Form.css";
-import { registerSchema } from "../../schema/auth.schema.js";
+import { profileSchema } from "../../schema/profile.schema.js";
+import { apiRequest } from "../../utils/api.js";
 
 export default function Profile() {
   const { callApi } = useApi();
+
   const [profile, setProfile] = useState(null);
-
-  // Fetch profile data on mount
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        const res = await callApi("get", "/users/profile");
-        setProfile(res);
-      } catch (err) {
-        console.error("Failed to fetch profile:", err);
-      }
-    };
-
-    fetchProfile();
-  }, []);
-
-  const profileImage =
-    profile?.images && profile.images.length > 0
-      ? `http://localhost:5000/${profile.images[0]}`
-      : "/home.jpg";
+  const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(false);
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
-    defaultValues: {
-      name: profile?.name || "",
-      email: profile?.email || "",
-      phone: profile?.phone || "",
-      address: profile?.address || "",
-      gender: profile?.gender || "",
-    },
-    resolver: zodResolver(registerSchema), // Add your schema if you have one
+    resolver: zodResolver(profileSchema),
   });
 
+  // ✅ Fetch Profile
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        setLoading(true);
+        const res = await callApi("get", "/users/profile");
+
+        setProfile(res);
+
+        // 🔥 Important: reset form with fetched data
+        reset({
+          name: res.name || "",
+          email: res.email || "",
+          phone: res.phone || "",
+          address: res.address || "",
+          gender: res.gender || "",
+        });
+      } catch (err) {
+        toast.error("Failed to load profile");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProfile();
+  }, [reset]);
+
+  // ✅ Update Profile
   const onSubmit = async (data) => {
     try {
-      const res = await callApi("put", "users/profile", { data });
-      console.log("Profile updated:", res);
+      setUpdating(true);
+  
+      // send the form values directly
+      await apiRequest("patch", "/users/profile", {
+        data, 
+      });
+  
+      toast.success("Profile updated successfully 🎉");
     } catch (err) {
-      console.error("Profile update error:", err);
+      toast.error("Failed to update profile");
+      console.error(err);
+    } finally {
+      setUpdating(false);
     }
   };
+  
+  if (loading) {
+    return <p className="text-center mt-10">Loading profile...</p>;
+  }
 
-  if (!profile) return <p>Loading...</p>;
+  const profileImage =
+    profile?.images?.length > 0
+      ? `http://localhost:5000/${profile.images[0]}`
+      : "/home.jpg";
 
   return (
     <div className="p-6 max-w-[1200px] mx-auto flex flex-col md:flex-row gap-6">
-      {/* Left: Image + Registered Date */}
+      
+      {/* Left Side */}
       <div className="flex flex-col items-center w-full md:w-[250px]">
         <img
           src={profileImage}
           alt="Profile"
           className="w-[200px] h-[200px] object-cover rounded-full mb-4"
         />
+
         <p className="text-gray-500 text-sm">
-          Registered: {new Date(profile.createdAt).toLocaleDateString()}
+          Registered:{" "}
+          {new Date(profile.createdAt).toLocaleDateString()}
         </p>
       </div>
 
-      {/* Right: Form */}
+      {/* Right Side Form */}
       <div className="flex-1">
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+          
           <TextInput
             name="name"
-            placeholder="Full Name"
+            placeholder="Enter your name"
             register={register}
             error={errors.name}
           />
@@ -83,7 +112,7 @@ export default function Profile() {
           <TextInput
             type="email"
             name="email"
-            placeholder="Email address"
+            placeholder="Enter your email"
             register={register}
             error={errors.email}
           />
@@ -91,18 +120,19 @@ export default function Profile() {
           <TextInput
             type="tel"
             name="phone"
-            placeholder="Phone number"
+            placeholder="Enter your phone"
             register={register}
             error={errors.phone}
           />
 
           <TextInput
             name="address"
-            placeholder="Address"
+            placeholder="Enter your address"
             register={register}
             error={errors.address}
           />
 
+          {/* Gender */}
           <div className="flex items-center gap-4">
             <label className="flex items-center gap-1">
               <input type="radio" value="male" {...register("gender")} />
@@ -117,11 +147,17 @@ export default function Profile() {
               Other
             </label>
           </div>
-          {errors.gender && <p className="text-red-500">{errors.gender.message}</p>}
+          {errors.gender && (
+            <p className="text-red-500">{errors.gender.message}</p>
+          )}
 
           <div className="mt-4">
-            <Button type="submit" variant="secondary">
-              Update Profile
+            <Button
+              type="submit"
+              variant="secondary"
+              disabled={updating}
+            >
+              {updating ? "Updating..." : "Update Profile"}
             </Button>
           </div>
         </form>
