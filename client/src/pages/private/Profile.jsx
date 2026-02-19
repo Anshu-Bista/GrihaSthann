@@ -2,15 +2,20 @@ import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 import { Button } from "../../components/Button.jsx";
 import { TextInput } from "../../components/TextInput.jsx";
 import { useApi } from "../../hooks/useAPI.js";
 import { profileSchema } from "../../schema/profile.schema.js";
 import { apiRequest } from "../../utils/api.js";
+import { useAuth } from "../../context/AuthContext.jsx";
 
 export default function Profile() {
   const { callApi } = useApi();
+  const { logout } = useAuth();
+  
+  const navigate = useNavigate();
 
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -71,6 +76,12 @@ export default function Profile() {
       setUpdating(false);
     }
   };
+
+  //  Log Out
+  const handleLogout = () => {
+    logout();              // clear context + storage
+    navigate("/login");    // redirect
+  };
   
   if (loading) {
     return <p className="text-center mt-10">Loading profile...</p>;
@@ -82,20 +93,26 @@ export default function Profile() {
       : "/home.jpg";
 
   return (
-    <div className="p-6 max-w-[1200px] mx-auto flex flex-col md:flex-row gap-6">
+    <div className="p-6 max-w-[1200px] mx-auto flex flex-col md:flex-row gap-6 mt-8">
       
       {/* Left Side */}
-      <div className="flex flex-col items-center w-full md:w-[250px]">
+      <div className="flex flex-col items-center w-full md:w-[500px]">
         <img
           src={profileImage}
           alt="Profile"
-          className="w-[200px] h-[200px] object-cover rounded-full mb-4"
+          className="w-[350px] h-[350px] object-cover rounded-full mb-4"
         />
 
         <p className="text-gray-500 text-sm">
           Registered:{" "}
           {new Date(profile.createdAt).toLocaleDateString()}
         </p>
+        <div className="mt-4">
+            <Button onClick={handleLogout}
+              variant="primary">
+                 Log Out
+            </Button>
+        </div>
       </div>
 
       {/* Right Side Form */}
