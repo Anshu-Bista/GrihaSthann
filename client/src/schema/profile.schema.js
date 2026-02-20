@@ -6,4 +6,7 @@ export const profileSchema = z.object({
   phone: z.string().min(7, "Phone is required"),
   address: z.string().optional(),
   gender: z.enum(["male", "female", "other"]),
+  profile: z
+    .any()
+    .optional(),
 });

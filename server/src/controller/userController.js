@@ -1,4 +1,6 @@
+import fs from "fs";
 import { User } from "../model/userModel.js";
+import { profile } from "console";
 
 // Get current logged-in user's profile
 export const getProfile = async (req, res) => {
@@ -28,7 +30,8 @@ export const getProfile = async (req, res) => {
 
 // Update current logged-in user's profile
 export const updateProfile = async (req, res) => {
-  try {  console.log("REQ BODY:", req.body);
+  try {  console.log("REQ FILE:", req.file);
+    console.log("REQ BODY:", req.body);
     const userId = req.user?.id; // from authMiddleware
 
     if (!userId) {
@@ -44,7 +47,7 @@ export const updateProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // 🔥 Optional: Prevent duplicate email
+    //  Prevent duplicate email
     if (email && email !== user.email) {
       const existingUser = await User.findOne({ where: { email } });
 
@@ -53,13 +56,29 @@ export const updateProfile = async (req, res) => {
       }
     }
 
-    // Update only provided fields
+    //Handle Image Paths
+    let profileImages = user.profile || [];
+
+    // Handle image
+    if (req.file) {
+      // delete old image if exists
+      if (profileImages.length > 0) {
+        const oldPath = path.join(process.cwd(), profileImages[0]);
+        if (fs.existsSync(oldPath)) fs.unlinkSync(oldPath);
+      }
+
+      // Save relative path to DB
+      profileImages = [req.file.path];  // e.g., "uploads/users/1676888888.jpg"
+    }
+
+    // Update user
     await user.update({
       name: name ?? user.name,
       email: email ?? user.email,
       phone: phone ?? user.phone,
       address: address ?? user.address,
       gender: gender ?? user.gender,
+      profile: profileImages,
     });
 
     // Return updated user (exclude password)

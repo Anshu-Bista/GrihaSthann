@@ -13,17 +13,20 @@ export function ImageInput({
 
   const handlePreview = (e) => {
     const selectedFiles = Array.from(e.target.files);
-
+  
     if (!selectedFiles.length) return;
-
+  
     const urls = selectedFiles.map((file) =>
       URL.createObjectURL(file)
     );
-
+  
     setPreviews(urls);
-
-    // ✅ Send files to RHF
-    onChange(e.target.files);
+  
+    if (multiple) {
+      onChange(e.target.files); // FileList
+    } else {
+      onChange(e.target.files[0]); // Single File
+    }
   };
 
   const removeImage = (index) => {
