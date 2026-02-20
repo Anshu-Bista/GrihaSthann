@@ -1,6 +1,7 @@
 import fs from "fs";
 import { User } from "../model/userModel.js";
 import { profile } from "console";
+import path from "path";
 
 // Get current logged-in user's profile
 export const getProfile = async (req, res) => {

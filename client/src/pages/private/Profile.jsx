@@ -43,6 +43,7 @@ export default function Profile() {
   // Show preview when image changes
   useEffect(() => {
     if (watchedImage) {
+      console.log("watchedImage:", watchedImage);
       setPreviewImage(URL.createObjectURL(watchedImage));
     }
   }, [watchedImage]);
@@ -80,6 +81,7 @@ export default function Profile() {
   // Save profile
   const onSubmit = async (data) => {
     console.log("SUBMIT DATA:", data);
+    console.log(data.image)
     try {
       setUpdating(true);
 
@@ -90,8 +92,9 @@ export default function Profile() {
       formData.append("address", data.address);
       formData.append("gender", data.gender);
 
-      if (data.image instanceof File) {
-        formData.append("image", data.image);
+      const file = data.image || watchedImage;
+      if (file) {
+        formData.append("image", file);
       }
 
       for (let [key, value] of formData.entries()) {
@@ -138,41 +141,38 @@ export default function Profile() {
     <div className="p-6 max-w-[1200px] mx-auto flex flex-col md:flex-row gap-6 mt-8">
       {/* Left Side: Image + Logout */}
       <div className="flex flex-col items-center w-full md:w-[400px]">
-        <Controller
+      <Controller
           name="image"
           control={control}
           defaultValue={null}
           render={({ field }) => (
-            <div className="flex flex-col items-center">
+            <div>
               <input
                 type="file"
                 accept="image/*"
                 className="hidden"
-                ref={fileInputRef} // <--- important
+                ref={fileInputRef}
                 onChange={(e) => {
                   const file = e.target.files[0];
                   if (file) {
-                    field.onChange(file); // send File to RHF
-                    setPreviewImage(URL.createObjectURL(file)); // preview
+                    field.onChange(file); // ✅ update RHF
+                    setPreviewImage(URL.createObjectURL(file));
                   }
                 }}
               />
-
               <div
-                className="w-40 h-40 rounded-full overflow-hidden border border-gray-300 cursor-pointer mb-4"
-                onClick={() => {
-                  fileInputRef.current.click(); // trigger the hidden input
-                }}
+                className="w-60 h-60 rounded-full overflow-hidden border border-gray-300 cursor-pointer mb-4"
+                onClick={() => fileInputRef.current.click()}
               >
                 <img
-                  src={previewImage || "/home.jpg"}
+                  src={field.value ? URL.createObjectURL(field.value) : previewImage || "/home.jpg"}
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
               </div>
             </div>
           )}
-        />
+      />
         <p className="text-gray-500 text-sm mt-2">
           Registered: {new Date(profile.createdAt).toLocaleDateString()}
         </p>
