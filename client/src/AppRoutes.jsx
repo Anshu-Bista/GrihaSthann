@@ -10,6 +10,7 @@ const UserDetail = React.lazy(() => import("./pages/private/Details.jsx"));
 const UserProfile = React.lazy(() => import("./pages/private/Profile.jsx"));
 
 const AdminAdd = React.lazy(() => import("./pages/private/Add.jsx"));
+const AdminHome = React.lazy(() => import("./pages/private/Admin.jsx"));
 
 const UserLogin = React.lazy(() => import("./pages/public/Login.jsx"));
 const UserRegister = React.lazy(() => import("./pages/public/Registration.jsx"));
@@ -29,11 +30,13 @@ export const AppRoutes = () => {
 
           {/* Private routes */}
           <Route element={<PrivateRoute />}>
-            <Route path="/home" element={<UserHome />} />
+            <Route path="/user" element={<UserHome />} />
             <Route path="/browse" element={<UserBrowse />} />
             <Route path="/property/:id" element={<UserDetail />} />
             <Route path="/profile" element={<UserProfile />} />
+
             <Route path="/add" element={<AdminAdd />} />
+            <Route path="/home" element={<AdminHome />} />
             {/* add more private pages here */}
           </Route>
 

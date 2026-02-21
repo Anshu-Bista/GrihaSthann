@@ -11,6 +11,7 @@ import { authRouter } from "./routes/authRoutes.js";
 import { uploadRouter } from "./routes/uploadRoutes.js";
 import { userRouter } from "./routes/userRoutes.js";
 import { propertyRouter } from "./routes/propertyRoutes.js";
+import { adminRouter } from "./routes/adminRoutes.js"; 
 import { createAdminIfNotExists } from "./model/createAdmin.js";
 
 const app = express();
@@ -48,6 +49,7 @@ const startServer = async () => {
     app.use("/api/auth", authRouter);
     app.use("/api/file", uploadRouter);
     app.use("/api/users", userRouter);
+    app.use("/api/admin", adminRouter);
     app.use("/api/properties", propertyRouter);
 
     app.get("/", (req, res) => {
