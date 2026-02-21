@@ -16,7 +16,7 @@ export default function PropertyCard({ item }) {
   // Determine image
   const propertyImage =
     item.images && item.images.length > 0
-      ? `http://localhost:5000${item.images[0]}`
+      ? `http://localhost:5000/${item.images[0]}`
       : "/home.jpg";
 
   return (

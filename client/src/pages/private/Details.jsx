@@ -19,6 +19,7 @@ export default function Details() {
 
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   // Fetch single property
   useEffect(() => {
@@ -46,10 +47,23 @@ export default function Details() {
   }
 
   // Determine image
-  const propertyImage =
-    property.images && property.images.length > 0
-      ? `http://localhost:5000${property.images[0]}`
-      : "/home.jpg";
+    const images =
+    Array.isArray(property.images) && property.images.length > 0
+      ? property.images
+      : [];
+    
+    const totalImages = images.length;
+    
+    const nextImage = () =>
+      setCurrentIndex((prev) => (prev + 1) % totalImages);
+    
+    const prevImage = () =>
+      setCurrentIndex((prev) => (prev - 1 + totalImages) % totalImages);
+    
+    const propertyImage =
+      totalImages > 0
+        ? `http://localhost:5000/${images[currentIndex].replace(/^\/+/, "")}`
+        : "/home.jpg";
 
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
@@ -63,6 +77,7 @@ export default function Details() {
         return "bg-dark-grey";
     }
   };
+
   const getFurnishingLabel = (value) => {
     if (value === "yes") return "Furnished";
     if (value === "no") return "Unfurnished";
@@ -134,11 +149,47 @@ export default function Details() {
       </div>
 
       {/* Image (No Padding) */}
+      <div className="relative mt-5">
+  {totalImages > 0 ? (
+    <>
+      {/* Left Button */}
+      <button
+        onClick={prevImage}
+        className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/80 px-3 py-1 rounded-full shadow"
+      >
+        ‹
+      </button>
+
+      {/* Image */}
       <img
         src={propertyImage}
-        alt="Property"
-        className="w-full h-[200px] object-cover mt-5"
+        alt={`Property ${currentIndex}`}
+        className="w-full h-[400px] object-cover rounded-lg"
+        onError={(e) => (e.target.src = "/home.jpg")}
       />
+
+      {/* Right Button */}
+      <button
+        onClick={nextImage}
+        className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/80 px-3 py-1 rounded-full shadow"
+      >
+        ›
+      </button>
+
+      {/* Counter */}
+      <div className="absolute bottom-2 right-2 bg-black/60 text-white px-2 py-1 text-xs rounded">
+        {currentIndex + 1} / {totalImages}
+      </div>
+    </>
+        ) : (
+          <img
+            src="/home.jpg"
+            alt="No Property"
+            className="w-full h-[250px] object-cover rounded-lg"
+          />
+        )}
+      </div>
+
       {/* Price */}
       <p className="text-gold font-bold text-[24px] mt-5">
         {property.price || "0"}
