@@ -32,3 +32,24 @@ export const getStats = async(req, res)=>{
         });
     }
 };
+
+export const getAllRequests = async(req,res)=>{
+    try{
+
+        const requests = await Request.findAll({
+            include:[
+                User,
+                Property
+            ]
+        });
+
+        res.json({
+            data: requests
+        });
+
+    }catch(err){
+        res.status(500).json({
+            message:"Failed to fetch requests"
+        });
+    }
+};
