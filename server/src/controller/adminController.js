@@ -53,3 +53,42 @@ export const getAllRequests = async(req,res)=>{
         });
     }
 };
+
+export const updateRequest = async(req,res)=>{
+    try{
+
+        const { id } = req.params;
+        const { status, visitDate } = req.body;
+
+        const request = await Request.findByPk(id);
+
+        if(!request){
+            return res.status(404).json({
+                message:"Request not found"
+            });
+        }
+
+        request.status = status || request.status;
+
+        if(status === "approved"){
+            request.visitDate = visitDate || request.visitDate;
+        }
+
+        if(status === "rejected"){
+            request.visitDate = null;
+        }
+
+        await request.save();
+
+        res.json({
+            message:"Request updated",
+            data:request
+        });
+
+    }catch(err){
+        res.status(500).json({
+            message:"Update failed",
+            error:err.message
+        });
+    }
+};
