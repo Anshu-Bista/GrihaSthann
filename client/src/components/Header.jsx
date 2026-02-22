@@ -36,7 +36,7 @@ export function Header() {
           {role === "admin" ? (
             <HeaderLink to="/add">Add</HeaderLink>
           ) : (
-            <HeaderLink to="/bookmarks">Bookmarks</HeaderLink>
+            <HeaderLink to="/requests">Requests</HeaderLink>
           )}
         </nav>
       )}

@@ -49,4 +49,45 @@ export const createRequest = async (req, res) => {
         error: error.message
       });
     }
-  };
+};
+
+export const getUserRequests = async (req, res) => {
+  try {
+
+    const userId = req.user.id;
+
+    const requests = await Request.findAll({
+      where: { userId },
+
+      include: [
+        {
+          model: Property,
+          attributes: [
+            "propertyId",
+            "title",
+            "price",
+            "images",
+            "city",
+            "locationArea"
+          ]
+        }
+      ],
+
+      order: [["createdAt", "DESC"]]
+    });
+
+    return res.status(200).json({
+      success: true,
+      data: requests
+    });
+
+  } catch (error) {
+    console.error(error.message);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch requests",
+      error: error.message
+    });
+  }
+};

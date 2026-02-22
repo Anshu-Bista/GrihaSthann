@@ -6,6 +6,9 @@ import {sequelize} from "./database/db.js";
 
 // 🔥 IMPORT MODELS (CRITICAL)
 import "./model/userModel.js";
+import "./model/propertyModel.js";
+import "./model/requestModel.js";
+import "./model/association.js"; 
 
 import { authRouter } from "./routes/authRoutes.js";
 import { uploadRouter } from "./routes/uploadRoutes.js";
