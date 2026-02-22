@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 const SECRET_KEY = "secret-key"; // must match generateToken
 
 export const authMiddleware = (req, res, next) => {
-  try {console.log("AUTH HEADER:", req.headers.authorization);
+  try {
     const authHeader = req.headers.authorization;
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {

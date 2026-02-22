@@ -19,10 +19,12 @@ export default function Admin() {
   // Request filter toggle
   const [requestFilter, setRequestFilter] = useState("pending");
 
+  //User
+  const [users, setUsers] = useState([]);
+
   useEffect(() => {
-    if (activeTab === "requests") {
-      fetchRequests();
-    }
+    if (activeTab === "requests") fetchRequests();
+    if (activeTab === "users") fetchUsers();
   }, [activeTab]);
 
   const fetchRequests = async () => {
@@ -107,6 +109,76 @@ export default function Admin() {
     }
   };
 
+  //fetch users
+  const fetchUsers = async () => {
+    try {
+      const res = await apiRequest("GET", "/admin/users");
+
+    console.log("USERS RESPONSE:", res);
+  
+      setUsers(res || []);
+    } catch (err) {
+      toast.error(err.message);
+    }
+  };
+
+  const renderUserCards = () => {
+    return users.map(user => {
+  
+      const image =
+        user.profile
+          ? `http://localhost:5000/${user.profile}`
+          : "/home.jpg";
+  
+      return (
+        <div
+          key={user.id}
+          className="
+            flex
+            items-center
+            gap-4
+            p-4
+            rounded-xl
+            shadow
+            bg-soft-purple
+            hover:shadow-lg
+            transition
+          "
+        >
+  
+          {/* Image */}
+          <img
+            src={image}
+            alt="user"
+            className="
+              w-16 h-16
+              rounded-full
+              object-cover
+            "
+          />
+  
+          {/* Details */}
+          <div className="flex-1">
+            <h3 className="font-semibold text-forest-green">
+              {user.name}
+            </h3>
+  
+            <p className="text-sm text-gray-500">
+              {user.email}
+            </p>
+  
+            <p className="text-xs text-gray-400">
+              Registered:
+              {" "}
+              {new Date(user.createdAt).toLocaleDateString()}
+            </p>
+          </div>
+  
+        </div>
+      );
+    });
+  };
+
   return (
     <div className="p-6 max-w-[1200px] mx-auto px-6">
       <div className="flex flex-row gap-16">
@@ -126,9 +198,29 @@ export default function Admin() {
           {/* USERS TAB */}
           {activeTab === "users" && (
             <div className="mt-6">
-              <h2 className="text-xl font-semibold">Users Section</h2>
+
+                <h2 className="text-xl font-semibold mb-4">
+                Users List
+                </h2>
+
+                <div className="
+                grid
+                grid-cols-1
+                md:grid-cols-2
+                gap-4
+                ">
+                {users.length > 0
+                    ? renderUserCards()
+                    : (
+                    <p className="text-gray-500">
+                        No users found
+                    </p>
+                    )
+                }
+                </div>
+
             </div>
-          )}
+            )}
 
           {/* REQUEST TAB */}
           {activeTab === "requests" && (

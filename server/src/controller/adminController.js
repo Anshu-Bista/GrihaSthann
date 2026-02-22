@@ -92,3 +92,27 @@ export const updateRequest = async(req,res)=>{
         });
     }
 };
+
+export const getAllUsers = async (req, res) => {
+    try {
+      const users = await User.findAll({
+        attributes: [
+          "id",
+          "name",
+          "email",
+          "profile",
+          "role",
+          "createdAt",
+        ],
+        where: {role: "user"},
+        order: [["createdAt", "DESC"]],
+      });
+  
+      res.status(200).json(users);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({
+        message: "Failed to fetch users",
+      });
+    }
+};
