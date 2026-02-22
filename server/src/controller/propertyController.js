@@ -1,5 +1,6 @@
 import { Property } from "../model/propertyModel.js";
 import { propertySchema } from "../validators/propertyValidator.js";
+import { Op } from "sequelize";
 
 export const createProperty = async (req, res) => {
     console.log(req.body);
@@ -59,61 +60,91 @@ export const createProperty = async (req, res) => {
     
   };
   
-  export const getProperties = async (req, res) => {
-    try {
-  
-      const properties = await Property.findAll({
-        order: [["createdAt", "DESC"]], // latest first (optional)
-      });
-  
-      res.status(200).json({
-        success: true,
-        count: properties.length,
-        data: properties,
-      });
-  
-    } catch (err) {
-  
-      console.error("Get properties error:", err);
-  
-      res.status(500).json({
+export const getProperties = async (req, res) => {
+  try {
+
+    const properties = await Property.findAll({
+      order: [["createdAt", "DESC"]], // latest first (optional)
+    });
+
+    res.status(200).json({
+      success: true,
+      count: properties.length,
+      data: properties,
+    });
+
+  } catch (err) {
+
+    console.error("Get properties error:", err);
+
+    res.status(500).json({
+      success: false,
+      message: "Failed to fetch properties",
+      error: err.message,
+    });
+  }
+};
+
+export const getPropertyById = async (req, res) => {
+  try {
+
+    const { id } = req.params;
+    const userId = req.user?.id;
+
+    const property = await Property.findOne({
+      where: { propertyId: Number(id) }
+    });
+
+    if (!property) {
+      return res.status(404).json({
         success: false,
-        message: "Failed to fetch properties",
-        error: err.message,
+        message: "Property not found"
       });
     }
-  };
 
-  export const getPropertyById = async (req, res) => {
-    try {
-  
-      const { id } = req.params;
-  
-      const property = await Property.findOne({
-        where: { propertyId: id }, // or id depending on DB
+    // ⭐ Unique user view tracking
+    if (userId) {
+
+      const existingView = await PropertyView.findOne({
+        where: { userId, propertyId: property.propertyId }
       });
-  
-      if (!property) {
-        return res.status(404).json({
-          success: false,
-          message: "Property not found",
+
+      if (!existingView) {
+
+        await PropertyView.create({
+          userId,
+          propertyId: property.propertyId
+        });
+
+        // ⭐ Atomic increment (VERY IMPORTANT)
+        await Property.increment("viewCount", {
+          where: { propertyId: property.propertyId }
         });
       }
-  
-      res.status(200).json({
-        success: true,
-        data: property,
+
+    } else {
+
+      // ⭐ Guest view count (optional)
+      await Property.increment("viewCount", {
+        where: { propertyId: property.propertyId }
       });
-  
-    } catch (err) {
-  
-      console.error("Get property by ID error:", err);
-  
-      res.status(500).json({
-        success: false,
-        message: "Failed to fetch property",
-        error: err.message,
-      });
+
     }
-  };
-  
+
+    // ⭐ Fetch updated property AFTER increment
+    const updatedProperty = await Property.findOne({
+      where: { propertyId: property.propertyId }
+    });
+
+    res.json({
+      success: true,
+      data: updatedProperty
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      message: "Server error"
+    });
+  }
+};

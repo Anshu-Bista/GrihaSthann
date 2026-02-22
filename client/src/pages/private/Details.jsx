@@ -25,19 +25,34 @@ export default function Details() {
 
   // Fetch single property
   useEffect(() => {
+
+    let isMounted = true;
+  
     const fetchProperty = async () => {
       try {
-        const response = await apiRequest("GET", `/properties/${id}`);
-        setProperty(response.data);
+        const response = await apiRequest(
+          "GET",
+          `/properties/${id}`
+        );
+  
+        if (isMounted) {
+          setProperty(response.data);
+        }
+  
       } catch (error) {
         console.error(error.message);
       } finally {
         setLoading(false);
       }
     };
+  
     fetchProperty();
+  
+    return () => {
+      isMounted = false;
+    };
+  
   }, [id]);
-
   // Loading state
   if (loading) {
     return <p className="p-6 text-center">Loading...</p>;
@@ -268,15 +283,20 @@ export default function Details() {
 
         {/* Right Icons */}
         <div className="flex gap-2 ml-4">
-          {/* Favorite */}
+          {/* Favorite
           <button className="p-2 rounded-full bg-off-white hover:bg-gray-100">
             <img src={favourite} alt="" className="w-5 h-5" />
-          </button>
+          </button> */}
 
-          {/* Views */}
-          <button className="p-2 rounded-full bg-off-white hover:bg-gray-100">
-            <img src={eye} alt="" className="w-5 h-5 stroke-[3.5]" />
-          </button>
+          <div className="flex flex-col items-center gap-2">
+            <button className="p-2 rounded-full bg-off-white hover:bg-gray-100">
+              <img src={eye} alt="" className="w-5 h-5" />
+            </button>
+
+            <span className="text-sm text-gray-600 font-medium">
+              {property.viewCount || 0}
+            </span>
+          </div>
         </div>
       </div>
 

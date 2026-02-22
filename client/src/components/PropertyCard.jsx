@@ -1,7 +1,7 @@
-import favourite from "../assets/favourite.png";
 import bed from "../assets/bed.png";
 import bath from "../assets/shower.png";
 import area from "../assets/area.png";
+import eye from "../assets/eye.svg";
 import { useNavigate } from "react-router-dom";
 
 export default function PropertyCard({ item }) {
@@ -10,7 +10,7 @@ export default function PropertyCard({ item }) {
 
   // Handle click
   const handleClick = () => {
-    navigate(`/property/${item.propertyId}`); // or item.id
+    navigate(`/property/${item.propertyId}`); 
   };
 
   // Determine image
@@ -52,7 +52,7 @@ export default function PropertyCard({ item }) {
           flex-col
         "
       >
-        {/* Price + Favorite */}
+        {/* Price + Views */}
         <div className="flex justify-between items-center">
           <p className="text-gold font-bold text-[24px]">
             {item.price || "0"}
@@ -62,20 +62,14 @@ export default function PropertyCard({ item }) {
             </span>
           </p>
 
-          <div
-            className="
-              w-9 h-9
-              rounded-full
-              bg-off-white
-              flex
-              items-center
-              justify-center
-              cursor-pointer
-              hover:scale-105
-              transition
-            "
-          >
-            <img src={favourite} alt="Favourite" className="w-4 h-4" />
+          <div className="flex items-center gap-2">
+            <button className="p-2 rounded-full bg-off-white hover:bg-gray-100">
+              <img src={eye} alt="" className="w-5 h-5" />
+            </button>
+
+            <span className="text-sm text-gray-600 font-medium">
+              {item.viewCount || 0}
+            </span>
           </div>
         </div>
 
