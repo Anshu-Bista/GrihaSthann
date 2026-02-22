@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import toast from "react-hot-toast";
 
 import { Button } from "../../components/Button.jsx";
 import bed from "../../assets/bed.png";
@@ -13,6 +13,7 @@ import time from "../../assets/time.png";
 import favourite from "../../assets/favourite.png";
 import point from "../../assets/point.png";
 import eye from "../../assets/eye.svg";
+import { apiRequest } from "../../utils/api.js";
 
 export default function Details() {
   const { id } = useParams();
@@ -20,20 +21,21 @@ export default function Details() {
   const [property, setProperty] = useState(null);
   const [loading, setLoading] = useState(true);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [requestSent, setRequestSent] = useState(false);
 
   // Fetch single property
   useEffect(() => {
-    axios
-      .get(`http://localhost:5000/api/properties/${id}`)
-      .then((res) => {
-        console.log(res.data.data);
-        setProperty(res.data.data);
+    const fetchProperty = async () => {
+      try {
+        const response = await apiRequest("GET", `/properties/${id}`);
+        setProperty(response.data);
+      } catch (error) {
+        console.error(error.message);
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Failed to fetch property", err);
-        setLoading(false);
-      });
+      }
+    };
+    fetchProperty();
   }, [id]);
 
   // Loading state
@@ -65,6 +67,7 @@ export default function Details() {
         ? `http://localhost:5000/${images[currentIndex].replace(/^\/+/, "")}`
         : "/home.jpg";
 
+
   const getStatusColor = (status) => {
     switch (status?.toLowerCase()) {
       case "active":
@@ -82,6 +85,20 @@ export default function Details() {
     if (value === "yes") return "Furnished";
     if (value === "no") return "Unfurnished";
     return "N/A";
+  };
+
+  const sendRequest = async () => {console.log("PROPERTY ID:", property?.propertyId);
+    const toastId = toast.loading("Sending request...");
+  
+    try {
+      const response = await apiRequest("POST", "/requests/send", {
+        data: { propertyId: property.propertyId},
+      });
+  
+      toast.success(response.message, { id: toastId });
+    } catch (error) {
+      toast.error(error.message, { id: toastId });
+    }
   };
 
   return (
@@ -142,8 +159,9 @@ export default function Details() {
 
         {/* Right Button */}
         <div className="flex items-center sm:sticky bottom-4 self-end bg-mint-green p-3 rounded-xl">
-          <Button type="submit" className="px-6 py-2">
-            Request A Visit
+          <Button onClick={sendRequest} 
+                  className="px-6 py-2">
+            {requestSent ? "Request Sent":"Request A Visit"}
           </Button>
         </div>
       </div>
@@ -314,32 +332,28 @@ export default function Details() {
 
           {/* Right Column */}
           <div className="space-y-2">
-
             <div className="flex items-center gap-4">
               <p className="text-dark-grey min-w-[130px]">City</p>
               <span className="font-medium capitalize">
-                {property.city || "N/A"}
+                {property.city}
               </span>
             </div>
-
             <div className="flex items-center gap-4">
-              <p className="text-dark-grey min-w-[130px]">Zip Code</p>
-              <span className="font-medium">
-                {property.zip || "N/A"}
+              <p className="text-dark-grey min-w-[130px]">Location</p>
+              <span className="font-medium capitalize">
+                {property.locationArea || "N/A"}
               </span>
             </div>
-
             <div className="flex items-center gap-4">
               <p className="text-dark-grey min-w-[130px]">Street</p>
               <span className="font-medium capitalize">
                 {property.street}
               </span>
             </div>
-
             <div className="flex items-center gap-4">
-              <p className="text-dark-grey min-w-[130px]">City</p>
-              <span className="font-medium capitalize">
-                {property.city}
+              <p className="text-dark-grey min-w-[130px]">Zip Code</p>
+              <span className="font-medium">
+                {property.zip || "N/A"}
               </span>
             </div>
 

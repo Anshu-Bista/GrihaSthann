@@ -15,7 +15,7 @@ export default function StatsSection(){
     const [stats, setStats] = useState({
         totalUsers: 0,
         totalLocations: 0,
-        //totalVisits: 0,
+        totalVisits: 0,
         totalProperties: 0
     });
 

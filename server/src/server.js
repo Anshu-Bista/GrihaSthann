@@ -13,6 +13,7 @@ import { userRouter } from "./routes/userRoutes.js";
 import { propertyRouter } from "./routes/propertyRoutes.js";
 import { adminRouter } from "./routes/adminRoutes.js"; 
 import { createAdminIfNotExists } from "./model/createAdmin.js";
+import { requestRouter } from "./routes/requestRoutes.js";
 
 const app = express();
 const PORT = 5000;
@@ -51,6 +52,7 @@ const startServer = async () => {
     app.use("/api/users", userRouter);
     app.use("/api/admin", adminRouter);
     app.use("/api/properties", propertyRouter);
+    app.use("/api/requests", requestRouter);
 
     app.get("/", (req, res) => {
       res.send("Application is running");

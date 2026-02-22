@@ -1,5 +1,6 @@
 import {  User } from "../model/userModel.js";
 import {  Property } from "../model/propertyModel.js";
+import {  Request } from "../model/requestModel.js";
 
 export const getStats = async(req, res)=>{
     try{
@@ -7,18 +8,19 @@ export const getStats = async(req, res)=>{
             where:{role: "user"}
         });
 
-        // const totalLocations = await Property.count({
-        //     where: {locationArea}
-        // });
+        const totalLocations = await Property.count({
+            distinct: true,
+            col: "locationArea"
+          });
 
-        //const totalVisits = await Request.count();
+        const totalVisits = await Request.count();
 
         const totalProperties = await Property.count();
 
         return res.status(200).json({
             totalUsers,
-            //totalLocations,
-            //totalVisits,
+            totalLocations,
+            totalVisits,
             totalProperties
         });
 
