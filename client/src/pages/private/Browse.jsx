@@ -114,6 +114,12 @@ export default function Browse() {
       });
   }, []);
 
+  const handleDeleteSuccess = (id) => {
+    setItems(prev =>
+      prev.filter(p => p.propertyId !== id)
+    );
+  };
+
   return (
     <div className="p-6 max-w-[1200px] mx-auto px-6">
       <FilterBar
@@ -125,7 +131,11 @@ export default function Browse() {
     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
   >
     {filteredItems.map((item) => (
-      <PropertyCard key={item.propertyId} item={item} />
+      <PropertyCard 
+          key={item.propertyId}
+          item={item} 
+          onDeleteSuccess={handleDeleteSuccess}
+          />
         ))}
       </div>
     ) : (

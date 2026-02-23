@@ -6,8 +6,10 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import swal from "sweetalert";
 import { useState } from "react";
+import toast from "react-hot-toast";
+import { apiRequest } from "../utils/api";
 
-export default function PropertyCard({ item }) {
+export default function PropertyCard({ item, onDeleteSuccess }) {
   const {user} = useAuth();
   const isAdmin = user?.role === "admin";
 
@@ -26,27 +28,37 @@ export default function PropertyCard({ item }) {
       : "/home.jpg";
 
   //delete  item
-  const handleDelete = () => {
+  const handleDelete = async () => {
 
-    swal({
+    const confirmDelete = await swal({
       title: "Are you sure?",
-      text: "Once deleted, this property cannot be recovered!",
+      text: "This property will be permanently deleted",
       icon: "warning",
-      buttons: true,
-      dangerMode: true,
-    }).then((willDelete) => {
-  
-      if (willDelete) {
-  
-        // Call your delete API here
-        console.log("Delete property:", item.propertyId);
-  
-        swal("Property deleted successfully!", {
-          icon: "success",
-        });
-  
-      }
+      buttons: ["Cancel", "Delete"],
+      dangerMode: true
     });
+  
+    if (!confirmDelete) return;
+  
+    try {
+  
+      await apiRequest(
+        "DELETE",
+        `/properties/${item.propertyId}`
+      );
+      
+      toast.success("Property deleted successfully ✅");
+      
+      // ⭐ Notify parent to refresh list
+      if (onDeleteSuccess) {
+        onDeleteSuccess(item.propertyId);
+      }
+  
+    } catch (err) {
+  
+      toast.error(err.message || "Delete failed ❌");
+  
+    }
   };
 
   return (

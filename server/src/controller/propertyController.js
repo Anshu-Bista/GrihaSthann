@@ -148,3 +148,41 @@ export const getPropertyById = async (req, res) => {
     });
   }
 };
+
+export const deleteProperty = async (req, res) => {
+
+  try {
+
+    const { id } = req.params; // ⭐ CHANGE HERE
+
+    if (!id) {
+      return res.status(400).json({
+        message: "Property id required"
+      });
+    }
+
+    const property = await Property.findOne({
+      where: { propertyId: Number(id) }
+    });
+
+    if (!property) {
+      return res.status(404).json({
+        message: "Property not found"
+      });
+    }
+
+    await property.destroy();
+
+    return res.json({
+      message: "Property deleted successfully"
+    });
+
+  } catch (err) {
+    console.error(err);
+
+    return res.status(500).json({
+      message: "Delete failed"
+    });
+  }
+
+};
