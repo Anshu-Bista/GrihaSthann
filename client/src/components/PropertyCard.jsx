@@ -2,11 +2,17 @@ import bed from "../assets/bed.png";
 import bath from "../assets/shower.png";
 import area from "../assets/area.png";
 import eye from "../assets/eye.svg";
+import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import swal from "sweetalert";
+import { useState } from "react";
 
 export default function PropertyCard({ item }) {
+  const {user} = useAuth();
+  const isAdmin = user?.role === "admin";
 
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
   // Handle click
   const handleClick = () => {
@@ -18,6 +24,30 @@ export default function PropertyCard({ item }) {
     item.images && item.images.length > 0
       ? `http://localhost:5000/${item.images[0]}`
       : "/home.jpg";
+
+  //delete  item
+  const handleDelete = () => {
+
+    swal({
+      title: "Are you sure?",
+      text: "Once deleted, this property cannot be recovered!",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then((willDelete) => {
+  
+      if (willDelete) {
+  
+        // Call your delete API here
+        console.log("Delete property:", item.propertyId);
+  
+        swal("Property deleted successfully!", {
+          icon: "success",
+        });
+  
+      }
+    });
+  };
 
   return (
     <div
@@ -52,8 +82,9 @@ export default function PropertyCard({ item }) {
           flex-col
         "
       >
-        {/* Price + Views */}
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-center relative">
+
+          {/* Price */}
           <p className="text-gold font-bold text-[24px]">
             {item.price || "0"}
 
@@ -62,14 +93,51 @@ export default function PropertyCard({ item }) {
             </span>
           </p>
 
-          <div className="flex items-center gap-2">
-            <button className="p-2 rounded-full bg-off-white hover:bg-gray-100">
-              <img src={eye} alt="" className="w-5 h-5" />
-            </button>
+          {/* Right Side Controls */}
+          <div className="flex items-center gap-4">
 
-            <span className="text-sm text-gray-600 font-medium">
-              {item.viewCount || 0}
-            </span>
+            {/* View Count */}
+            <div className="flex items-center gap-2">
+              <button className="p-2 rounded-full bg-off-white hover:bg-gray-100">
+                <img src={eye} alt="" className="w-5 h-5" />
+              </button>
+
+              <span className="text-sm text-gray-600 font-medium">
+                {item.viewCount || 0}
+              </span>
+            </div>
+
+            {/* ⭐ ADMIN ONLY MORE MENU */}
+            {isAdmin && (
+              <div className="relative">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setMenuOpen(prev => !prev);
+                    }}
+                    className="text-xl font-bold px-2 hover:bg-gray-100 rounded"
+                  >
+                    ⋮
+                  </button>
+                {menuOpen && (
+                  <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-32 z-50">
+
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete();
+                      }}
+                      className="w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100"
+                    >
+                      Delete
+                    </button>
+
+                  </div>
+                )}
+
+              </div>
+            )}
+
           </div>
         </div>
 
