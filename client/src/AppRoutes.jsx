@@ -31,14 +31,20 @@ export const AppRoutes = () => {
 
           {/* Private routes */}
           <Route element={<PrivateRoute />}>
-            <Route path="/user" element={<UserHome />} />
             <Route path="/browse" element={<UserBrowse />} />
             <Route path="/property/:id" element={<PropertyDetail />} />
             <Route path="/profile" element={<UserProfile />} />
             <Route path="/requests" element={<UserRequest />} />
+            {/* USER HOME */}
+            <Route element={<PrivateRoute allowedRoles={["user"]} />}>
+              <Route path="/user/home" element={<UserHome />} />
+            </Route>
 
-            <Route path="/add" element={<AdminAdd />} />
-            <Route path="/home" element={<AdminHome />} />
+            {/* ADMIN HOME */}
+            <Route element={<PrivateRoute allowedRoles={["admin"]} />}>
+              <Route path="/admin/home" element={<AdminHome />} />
+              <Route path="/add" element={<AdminAdd />} />
+            </Route>
             {/* add more private pages here */}
           </Route>
 

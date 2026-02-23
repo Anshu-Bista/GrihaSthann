@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+import prop from "../assets/noproperty.jpg";
 import PropertyCard from "../../components/PropertyCard";
 import { FilterBar } from "../../components/FilterBar";
 
@@ -131,6 +132,7 @@ export default function Browse() {
         </div>
       ) : (
         <p className="text-dark-grey text-center p-8">No matching properties available</p>
+        <img src={prop} alt=""/>
       )}
     </div>
   );
