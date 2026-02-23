@@ -35,7 +35,7 @@ export function Header() {
           <HeaderLink to="/browse">Browse</HeaderLink>
 
           {role === "admin" ? (
-            <HeaderLink to="/add">Add Property</HeaderLink>
+            <HeaderLink to="/add">Add</HeaderLink>
           ) : (
             <HeaderLink to="/requests">Requests</HeaderLink>
           )}

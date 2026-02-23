@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import prop from "../assets/noproperty.jpg";
+import prop from "../../assets/noproperty.jpg";
 import PropertyCard from "../../components/PropertyCard";
 import { FilterBar } from "../../components/FilterBar";
 
@@ -121,19 +121,28 @@ export default function Browse() {
         setFilters={setFilters}
        />
       {filteredItems.length > 0 ? (
-        <div
-          className="grid grid-cols-1
-                sm:grid-cols-2
-                lg:grid-cols-3
-                gap-6">
-          {filteredItems.map((item) => (
-            <PropertyCard key={item.propertyId} item={item} />
-          ))}
-        </div>
-      ) : (
-        <p className="text-dark-grey text-center p-8">No matching properties available</p>
-        <img src={prop} alt=""/>
-      )}
+  <div
+    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+  >
+    {filteredItems.map((item) => (
+      <PropertyCard key={item.propertyId} item={item} />
+        ))}
+      </div>
+    ) : (
+      <div className="flex flex-col items-center justify-center h-[60vh] text-center gap-4">
+
+        <img
+          src={prop}
+          alt="No property"
+          className="w-60 md:w-72 opacity-80"
+        />
+
+        <p className="text-dark-grey text-lg font-medium">
+          No matching properties available
+        </p>
+
+      </div>
+    )}
     </div>
   );
 }

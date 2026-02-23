@@ -180,135 +180,137 @@ export default function Admin() {
   };
 
   return (
-    <div className="p-6 max-w-[1200px] mx-auto px-6">
-      <div className="flex flex-row gap-16">
-        {/* Sidebar */}
-        <div className="mt-16 w-[300px]">
-          <Button onClick={() => setActiveTab("users")}>Users</Button>
-
-          <Button className="mt-2" onClick={() => setActiveTab("requests")}>
+    <div className="p-4 md:p-6 max-w-[1200px] mx-auto">
+  
+      {/* ⭐ Main Layout Row */}
+      <div className="flex flex-col md:flex-row gap-6">
+  
+        {/* ⭐ Sidebar (Desktop Left) */}
+        <div className="w-full md:w-[220px] flex md:flex-col mt-16 gap-2">
+  
+          <Button
+            onClick={() => setActiveTab("users")}
+            className={`w-full ${
+              activeTab === "users" ? "bg-green-600" : ""
+            }`}
+          >
+            Users
+          </Button>
+  
+          <Button
+            onClick={() => setActiveTab("requests")}
+            className={`w-full ${
+              activeTab === "requests" ? "bg-green-600" : ""
+            }`}
+          >
             Requests
           </Button>
+  
         </div>
-
-        {/* Main Content */}
-        <div className="flex-1">
+  
+        {/* ⭐ Right Side Content */}
+        <div className="flex-1 space-y-6">
+  
+          {/* ⭐ Stats Section (Aligned with Sidebar Top) */}
           <StatsSection />
-
+  
           {/* USERS TAB */}
           {activeTab === "users" && (
-            <div className="mt-6">
-
-                <h2 className="text-xl font-semibold mb-4">
+            <div>
+              <h2 className="text-xl font-semibold mb-4">
                 Users List
-                </h2>
-
-                <div className="
-                grid
-                grid-cols-1
-                md:grid-cols-2
-                gap-4
-                ">
+              </h2>
+  
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {users.length > 0
-                    ? renderUserCards()
-                    : (
-                    <p className="text-gray-500">
-                        No users found
+                  ? renderUserCards()
+                  : (
+                    <p className="text-gray-500 text-center col-span-full">
+                      No users found
                     </p>
-                    )
-                }
-                </div>
-
-            </div>
-            )}
-
-          {/* REQUEST TAB */}
-          {activeTab === "requests" && (
-            <div className="mt-6">
-              {/* Toggle Buttons */}
-              <div className="flex gap-4 mb-6">
-                <Button
-                  onClick={() => setRequestFilter("pending")}
-                  className={requestFilter === "pending" ? "bg-green-600" : ""}
-                >
-                  Pending Requests
-                </Button>
-
-                <Button
-                  onClick={() => setRequestFilter("completed")}
-                  className={requestFilter === "completed" ? "bg-blue-600" : ""}
-                >
-                  Completed Requests
-                </Button>
+                  )}
               </div>
-
-              {/* Request Lists */}
-              <div className="grid gap-4">
-
-                {/* Pending */}
-                {requestFilter === "pending" && (
-                    pendingRequests.length > 0 ? (
-                    renderRequestCards(pendingRequests)
-                    ) : (
-                    <p className="text-gray-500 text-center">
-                        No pending requests
-                    </p>
-                    )
-                )}
-
-                {/* Completed */}
-                {requestFilter === "completed" && (
-                    completedRequests.length > 0 ? (
-                    renderRequestCards(completedRequests)
-                    ) : (
-                    <p className="text-gray-500 text-center">
-                        No completed requests
-                    </p>
-                    )
-                )}
-
-                </div>
             </div>
           )}
+  
+          {/* REQUEST TAB */}
+          {activeTab === "requests" && (
+            <div className="grid md:grid-cols-2 gap-6">
+  
+              {/* Pending */}
+              <div>
+                <h3 className="font-semibold text-yellow-600 mb-3">
+                  Pending Requests
+                </h3>
+  
+                {pendingRequests.length > 0
+                  ? renderRequestCards(pendingRequests)
+                  : <p className="text-gray-500">No pending requests</p>
+                }
+              </div>
+  
+              {/* Completed */}
+              <div>
+                <h3 className="font-semibold text-green-600 mb-3">
+                  Completed Requests
+                </h3>
+  
+                {completedRequests.length > 0
+                  ? renderRequestCards(completedRequests)
+                  : <p className="text-gray-500">No completed requests</p>
+                }
+              </div>
+  
+            </div>
+          )}
+  
         </div>
+  
       </div>
-
-      {/* MODAL */}
+  
+      {/* ⭐ Modal (unchanged) */}
       {showModal && selectedRequest && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex justify-center items-center">
-          <div className="bg-white p-6 rounded-xl w-[500px]">
-            <h2 className="text-xl font-semibold mb-4">Request Details</h2>
-
+        <div className="fixed inset-0 bg-black/40 flex justify-center items-center p-4 z-50">
+          <div className="bg-white p-6 rounded-xl w-full max-w-md">
+            <h2 className="text-xl font-semibold mb-4">
+              Request Details
+            </h2>
+  
             <p>User: {selectedRequest.User?.name}</p>
             <p>Email: {selectedRequest.User?.email}</p>
-
-            <p className="mt-2">Property: {selectedRequest.Property?.title}</p>
-
+  
+            <p className="mt-2">
+              Property: {selectedRequest.Property?.title}
+            </p>
+  
             <p className="text-sm text-gray-500 mt-2">
               {selectedRequest.description}
             </p>
-
-            {/* Visit Date */}
+  
             <div className="mt-4">
-              <label className="block text-sm mb-1">Schedule Visit Date</label>
-
+              <label className="block text-sm mb-1">
+                Schedule Visit Date
+              </label>
+  
               <DatePicker
                 selected={visitDate}
                 onChange={setVisitDate}
                 className="border p-2 rounded w-full"
               />
             </div>
-
-            <div className="flex justify-end gap-3 mt-6">
-              <Button onClick={() => setShowModal(false)}>Close</Button>
-
+  
+            <div className="flex justify-end gap-3 mt-6 flex-wrap">
+              <Button onClick={() => setShowModal(false)}>
+                Close
+              </Button>
+  
               <Button
                 onClick={() => updateRequestStatus("approved")}
                 className="bg-green-600"
               >
                 Approve
               </Button>
-
+  
               <Button
                 onClick={() => updateRequestStatus("rejected")}
                 className="bg-red"
@@ -319,6 +321,7 @@ export default function Admin() {
           </div>
         </div>
       )}
+  
     </div>
   );
 }
