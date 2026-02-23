@@ -10,7 +10,6 @@ import furniture from "../../assets/furniture.png";
 import category from "../../assets/category.png";
 import area from "../../assets/area.png";
 import time from "../../assets/time.png";
-import favourite from "../../assets/favourite.png";
 import point from "../../assets/point.png";
 import eye from "../../assets/eye.svg";
 import { apiRequest } from "../../utils/api.js";

@@ -26,6 +26,7 @@ export default function Add() {
     register,
     handleSubmit,
     setValue,
+    watch,
     control,
     formState: { errors },
   } = useForm({
@@ -42,6 +43,8 @@ export default function Add() {
     },
   });
   
+  const selectedAmenities = watch("amenities");
+
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
@@ -234,10 +237,11 @@ export default function Add() {
             <h3 className="font-bold mb-2">Amenities Section</h3>
             <AmenityChips
               name="amenities"
-              register={register}
-              setValue={setValue}
-              error={errors.amenities}
               options={amenityOptions}
+              value={selectedAmenities}
+              setValue={setValue}
+              register={register}
+              error={errors.amenities}
               allowCustom={true}
             />
 
