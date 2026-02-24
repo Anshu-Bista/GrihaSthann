@@ -31,10 +31,12 @@ export default function Login() {
 
       login(res.access_token, res.user);
 
-      console.log("LOGIN SUCCESS, NAVIGATING...");
-      navigate("/home", { replace: true });
-
-      console.log(res);
+      if (res.user.role === "admin") {
+        navigate("/admin/home", { replace: true });
+      } else {
+        navigate("/user/home", { replace: true });
+      }
+      
     } catch (e) {
       console.error("Login failed:", e.message);
     }
