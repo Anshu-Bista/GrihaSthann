@@ -239,7 +239,7 @@ export default function Admin() {
   
               {/* Pending */}
               <div>
-                <h3 className="font-semibold text-yellow-600 mb-3">
+                <h3 className="font-semibold text-red mb-3">
                   Pending Requests
                 </h3>
   
@@ -251,7 +251,7 @@ export default function Admin() {
   
               {/* Completed */}
               <div>
-                <h3 className="font-semibold text-green-600 mb-3">
+                <h3 className="font-semibold text-bright-green mb-3">
                   Completed Requests
                 </h3>
   

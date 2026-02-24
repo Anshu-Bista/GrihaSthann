@@ -9,11 +9,13 @@ import { loginSchema } from "../../schema/auth.schema.js";
 import { useApi } from "../../hooks/useAPI.js";
 import "../../css/Form.css";
 import { useAuth } from "../../context/AuthContext.jsx";
+import { useState } from "react";
 
 export default function Login() {
   const navigate = useNavigate();
   const { callApi } = useApi();
   const { login } = useAuth();
+
 
   const {
     register,
@@ -56,14 +58,14 @@ export default function Login() {
           error={errors.email}
         />
 
-        <TextInput
-          type="password"
-          name="password"
-          placeholder="Password"
-          iconClass="lock-icon"
-          register={register}
-          error={errors.password}
-        />
+<TextInput
+  type="password"
+  name="password"
+  placeholder="Password"
+  iconClass="lock-icon"
+  register={register}
+  error={errors.password}
+/>
 
         {/* Forgot password */}
         <div className="forgot-password">

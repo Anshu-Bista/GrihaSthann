@@ -76,6 +76,34 @@ background-image: url("../../public/lock.png");
     background-image: url("../../public/gender.png");
   }
 
+  .right-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  
+  .eye-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+  }
+
+  .password-eye {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.7;
+  }
+  
+  .password-eye:hover {
+    opacity: 1;
+  }
+
 /* Input field */
 .input-group input {
     width: 100%;

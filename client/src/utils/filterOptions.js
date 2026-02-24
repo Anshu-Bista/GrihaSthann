@@ -57,6 +57,7 @@ export const cityOptions = [
   ];
   
   export const tenantOptions = [
+    { value: "any", label: "Any Tenant" },
     { value: "family", label: "Family" },
     { value: "solo", label: "Solo" },
   ];
