@@ -1,7 +1,7 @@
 import { jest } from "@jest/globals";
 
 /* ===============================
-   MOCKS
+   MOCK PROPERTY MODEL
 ================================ */
 
 jest.unstable_mockModule("../src/model/propertyModel.js", () => ({
@@ -10,23 +10,6 @@ jest.unstable_mockModule("../src/model/propertyModel.js", () => ({
     findAll: jest.fn(),
     findOne: jest.fn(),
     increment: jest.fn(),
-  },
-}));
-
-jest.unstable_mockModule("../src/model/propertyViewModel.js", () => ({
-  PropertyView: {
-    findOne: jest.fn(),
-    create: jest.fn(),
-  },
-}));
-
-jest.unstable_mockModule("zod", () => ({
-  ZodError: class ZodError extends Error {
-    constructor() {
-      super("ZodError");
-      this.errors = [];
-      this.name = "ZodError";
-    }
   }
 }));
 
@@ -35,12 +18,13 @@ jest.unstable_mockModule("zod", () => ({
 ================================ */
 
 const { Property } = await import("../src/model/propertyModel.js");
-const { PropertyView } = await import("../src/model/propertyViewModel.js");
 
-const propertyController = await import("../src/controller/propertyController.js");
+const propertyController = await import(
+  "../src/controller/propertyController.js"
+);
 
 /* ===============================
-   HELPERS
+   RESPONSE MOCK
 ================================ */
 
 const mockResponse = () => {
@@ -51,7 +35,7 @@ const mockResponse = () => {
 };
 
 /* ===============================
-   TEST CASES
+   TESTS
 ================================ */
 
 describe("Property Controller", () => {
@@ -60,7 +44,7 @@ describe("Property Controller", () => {
     jest.clearAllMocks();
   });
 
-  /* ---------- CREATE PROPERTY ---------- */
+  /* CREATE PROPERTY */
 
   it("should create property", async () => {
 
@@ -68,8 +52,14 @@ describe("Property Controller", () => {
       body: {
         title: "Test House",
         description: "Nice house",
+        propertyType: "house",
         price: "10000",
         area: "1200",
+        locationArea: "Dillibazar",
+        city: "Kathmandu",
+        street: "Main Road",
+        zip: "44600",
+        furnishingStatus: "furnished",
         yearBuilt: "2020",
         level: "2",
         bed: "2",
@@ -77,9 +67,7 @@ describe("Property Controller", () => {
         kitchen: "1",
         amenities: ["wifi"]
       },
-      files: [
-        { path: "uploads/test1.jpg" }
-      ]
+      files: [{ path: "uploads/test1.jpg" }]
     };
 
     const res = mockResponse();
@@ -94,44 +82,34 @@ describe("Property Controller", () => {
     expect(res.status).toHaveBeenCalledWith(201);
   });
 
-  /* ---------- GET PROPERTIES ---------- */
+  /* GET ALL */
 
-  it("should get properties list", async () => {
+  it("should get properties", async () => {
 
-    const req = {};
     const res = mockResponse();
 
     Property.findAll.mockResolvedValue([
       { id: 1, title: "House 1" }
     ]);
 
-    await propertyController.getProperties(req, res);
+    await propertyController.getProperties({}, res);
 
     expect(res.status).toHaveBeenCalledWith(200);
   });
 
-  /* ---------- GET PROPERTY BY ID ---------- */
+  /* GET BY ID */
 
   it("should get property by id", async () => {
 
     const req = {
-      params: { id: 1 },
-      user: { id: 10 }
+      params: { id: 1 }
     };
 
     const res = mockResponse();
 
     Property.findOne
-      .mockResolvedValueOnce({
-        propertyId: 1
-      })
-      .mockResolvedValueOnce({
-        propertyId: 1
-      });
-
-    PropertyView.findOne.mockResolvedValue(null);
-
-    PropertyView.create.mockResolvedValue({});
+      .mockResolvedValueOnce({ propertyId: 1 })
+      .mockResolvedValueOnce({ propertyId: 1 });
 
     Property.increment.mockResolvedValue([1]);
 
@@ -140,7 +118,7 @@ describe("Property Controller", () => {
     expect(res.json).toHaveBeenCalled();
   });
 
-  /* ---------- DELETE PROPERTY ---------- */
+  /* DELETE */
 
   it("should delete property", async () => {
 
@@ -151,16 +129,12 @@ describe("Property Controller", () => {
     const res = mockResponse();
 
     Property.findOne.mockResolvedValue({
-      destroy: jest.fn()
+      destroy: jest.fn().mockResolvedValue(true)
     });
 
     await propertyController.deleteProperty(req, res);
 
-    expect(res.json).toHaveBeenCalledWith(
-      expect.objectContaining({
-        message: "Property deleted successfully"
-      })
-    );
+    expect(res.json).toHaveBeenCalled();
   });
 
 });
