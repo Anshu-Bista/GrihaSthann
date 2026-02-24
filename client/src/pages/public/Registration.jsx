@@ -1,12 +1,14 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
 
 import { Button } from "../../components/Button.jsx";
 import { TextInput } from "../../components/TextInput.jsx";
 import { useApi } from "../../hooks/useAPI.js";
 import "../../css/Form.css";
 import { registerSchema } from "../../schema/auth.schema.js";
+import { FormHeader } from "../../components/FormHeader.jsx";
 
 export default function Registration() {
   const navigate = useNavigate();
@@ -25,17 +27,27 @@ export default function Registration() {
       const res = await callApi("POST", "/auth/register", {
         data: userData,
       });
-
-      navigate("/login");
+  
+      toast.success("Registration successful! Please login.");
+  
+      // Small delay so user can see the message
+      setTimeout(() => {
+        navigate("/login", { replace: true });
+      }, 800);
+  
       console.log(res);
+  
     } catch (err) {
       console.log(err.message);
+      toast.error("Registration failed. Please try again.");
     }
   };
 
   return (
     <div className="register-wrapper">
       <form className="register-form" onSubmit={handleSubmit(onSubmit)}>
+        
+      <FormHeader title="Sign Up " subtitle="Lets Get Started" />
         {/* Name */}
         <TextInput
           name="name"

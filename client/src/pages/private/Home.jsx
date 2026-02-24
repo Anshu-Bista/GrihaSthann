@@ -19,8 +19,10 @@ export default function Home() {
         </div>
         {/* -- Text --*/}
         <div className="md:w-1/2">
-          <h2 className="text-2xl font-bold">Title</h2>
-          <p className="mt-2 text-gray-600">Description</p>
+        <h2 className="text-2xl font-bold text-forest-green">
+          Explore. Choose. Visit 
+        </h2>
+        <p className="mt-2 text-gray-600 text-soft-olive">Browse properties and request visits anytime.</p>
         </div>
       </div>
 
