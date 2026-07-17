@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+/* Tailwind v4 design tokens */
+@theme {
+  --color-sand-beige: #D9C8A7;
+  --color-off-white: #FAFAFA;
+  --color-gold: #D4A017;
+  --color-mint-green: #E8F5E9;
+  --color-soft-olive: #7DA37D;
+  --color-forest-green: #1B5E20;
+  --color-bright-green: #2E7D32;
+  --color-dark-grey: #767879;
+  --color-soft-purple: #E0DEF7;
+  --color-primary-purple: #7065F0;
+  --color-red: #C62828;
+}
+
+/* Optional global styles */
+body {
+  background: var(--color-mint-green);
+}

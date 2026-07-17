@@ -1,0 +1,226 @@
+.register-wrapper {
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+  }
+  
+.register-form{
+    width: 100%;
+    max-width: 420px;
+    padding: 28px;
+    gap: 16px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: center;
+    box-sizing: border-box;
+
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.form-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.form-subtitle {
+  font-size: 14px;
+  color: var(--dark-grey);
+}
+
+/* Input wrapper */
+.input-group {
+    position: relative;
+    width: 100%;
+  }
+
+/* Icon inside input */
+.icon {
+    position: absolute;
+    top: 50%;
+    left: 14px;
+    transform: translateY(-50%);
+
+    width: 18px;
+    height: 18px;
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.7;
+  }
+
+.user-icon {
+background-image: url("../../public/user.png");
+}
+.email-icon {
+background-image: url("../../public/email.png");
+}
+.phone-icon {
+background-image: url("../../public/call.png");
+}
+.lock-icon {
+background-image: url("../../public/lock.png");
+}
+.location-icon {
+    background-image: url("../../public/location.png");
+}
+.gender-icon {
+    background-image: url("../../public/gender.png");
+  }
+
+  .right-icon {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  
+  .eye-icon {
+    width: 18px;
+    height: 18px;
+    opacity: 0.7;
+  }
+
+  .password-eye {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 16px;
+    opacity: 0.7;
+  }
+  
+  .password-eye:hover {
+    opacity: 1;
+  }
+
+/* Input field */
+.input-group input {
+    width: 100%;
+    padding: 8px 10px 8px 44px;
+    border-radius: 8px;
+    border: 2px solid var(--sand-beige);
+    background: var(--off-white);
+    outline: none;
+    font-size: 14px;
+  }
+  
+  .input-group input::placeholder {
+    color: #9b9b9b;
+  }
+
+/* Focus effect */
+.input-group input:focus {
+    border-color: var(--gold);
+  }
+  
+  /* Error text */
+  .error {
+    font-size: 12px;
+    color: red;
+    margin-top: -10px;
+  }
+  .input-group input.error-input {
+    border-color: red;
+  }
+  
+  /* Gender Radio Button */
+  .gender-group {
+    min-height: 40px;
+  
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  
+    padding: 8px 10px 8px 44px;
+    border: 2px solid var(--sand-beige);
+    border-radius: 8px;
+    background: var(--off-white);
+  
+    box-sizing: border-box;
+    position: relative;
+  }
+
+.input-group input,
+.gender-group,
+.button-wrapper button {
+  width: 100% !important;
+  box-sizing: border-box;
+  display: block;
+}
+  
+  /* label becomes the clickable pill */
+  .gender-option {
+    display: flex;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  /* hide radio */
+  .gender-option input {
+    display: none;
+  }
+  
+  /* pill */
+  .gender-option span {
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--sand-beige);
+    font-size: 14px;
+    color: var(--dark-grey);
+    transition: all 0.2s ease;
+    margin-right: 20px;
+  }
+  
+  /* selected state */
+  .gender-option input:checked + span {
+    background-color: var(--forest-green);
+    color: white;
+    border-color: var(--forest-green);
+  }
+   
+  
+/* Login text */
+.login-text {
+    text-align: center;
+    font-size: 14px;
+    color: var(--dark-grey); 
+  }
+  
+  .login-text a {
+    color: var(--forest-green);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  
+  .login-text a:hover {
+    text-decoration: underline;
+  }
+
+/* FORGOT PASSWORD for login page */
+.forgot-password {
+  text-align: right;
+  margin-top: -6px;
+}
+
+.forgot-password a {
+  font-size: 13px;
+  color: var(--forest-green);
+  text-decoration: none;
+}
+
+.forgot-password a:hover {
+  text-decoration: underline;
+}

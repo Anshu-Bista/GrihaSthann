@@ -1,9 +1,0 @@
-body {
-  margin: 0;
-  min-width: 320px;
-  min-height: 100vh;
-  display: block;   /* important */
-
-  
-  background: var(--mint-green);
-}

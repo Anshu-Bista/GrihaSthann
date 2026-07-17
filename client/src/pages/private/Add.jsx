@@ -1,0 +1,345 @@
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+import { Controller } from "react-hook-form";
+
+import { apiUpload } from "../../utils/api.js"; 
+import { TextInput } from "../../components/TextInput.jsx";
+import { Button } from "../../components/Button.jsx";
+import { SelectInput } from "../../components/SelectInput.jsx";
+import { ImageInput } from "../../components/ImageInput.jsx";
+import { AmenityChips } from "../../components/AmenityChips.jsx";
+import { propertySchema } from "../../schema/property.schema.js";
+import {
+  cityOptions,
+  adminPropertyTypeOptions,
+  furnishingOptions,
+  leaseOptions,
+  tenantOptions,
+  amenityOptions
+} from "../../utils/filterOptions";
+
+import { useNavigate } from "react-router-dom";
+
+export default function Add() {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(propertySchema),
+    defaultValues: {
+      amenities: [],
+      propertyImage: [],
+      leaseType: "",
+      tenantType: "",
+      furnishingStatus: "",
+      status: "active",
+      viewCount: 0,
+      saveCount: 0,
+    },
+  });
+  
+  const selectedAmenities = watch("amenities");
+
+  const navigate = useNavigate();
+
+  const onSubmit = async (data) => {
+      console.log(data);
+      console.log(data.propertyImage?.[0]);
+      console.log(data.amenities);
+    try {
+      const formData = new FormData();
+
+      // Append normal fields
+      Object.keys(data).forEach((key) => {
+        if (key === "propertyImage" || key === "amenities") return;
+      
+        if (
+          ["price", "area", "yearBuilt", "level", "bed", "bath", "kitchen"].includes(key)
+        ) {
+          formData.append(key, Number(data[key]));
+        } else {
+          formData.append(
+            key,
+            data[key] !== undefined && data[key] !== null
+              ? data[key]
+              : ""
+          );
+        }
+      });      
+
+      // Append images
+      if (data.propertyImage?.length) {
+        Array.from(data.propertyImage).forEach((file) => {
+          formData.append("images", file);
+        });
+      }
+      
+
+      // Append amenities
+      data.amenities.forEach((a) => {
+        formData.append("amenities", a);
+      });
+      
+
+      // Show loading toast
+      const toastId = toast.loading("Adding property...");
+      for (let pair of formData.entries()) {
+        console.log(pair[0], pair[1]);
+      }
+      await apiUpload("/properties", formData);
+
+      toast.success("Property added successfully ✅", {
+        id: toastId,
+      });
+
+      // Optional: reset form / redirect
+      // reset();
+      navigate("/admin/properties");
+
+    } catch (err) {
+      console.error(err);
+
+      toast.error(err.message || "Failed to add property ❌");
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-[1200px] mx-auto p-6">
+        
+        {/* LEFT SIDE */}
+        <div className="flex flex-col space-y-6">
+          {/* Basic */}
+          <section className=" p-5 rounded-xl shadow-sm border border-sand-beige
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-lg hover:border-forest-green/50">
+                    
+            <h3 className="font-bold mb-4">Basic Property Details</h3>
+            <TextInput
+              name="title"
+              label="Property Title"
+              register={register}
+              error={errors.title}
+            />
+
+            <SelectInput
+              name="propertyType"
+              label="Property Type"
+              register={register}
+              error={errors.propertyType}
+              options={adminPropertyTypeOptions}
+            />
+
+            <div className="flex flex-row gap-4">
+              <TextInput
+                name="price"
+                type="number"
+                label="Price per Month"
+                register={register}
+                error={errors.price}
+              />
+
+              <TextInput
+                name="area"
+                type="number"
+                label="Total Area"
+                register={register}
+                error={errors.area}
+              />
+            </div>
+
+            <TextInput
+                name="description"
+                label="Property Description"
+                placeholder="Write details about the property..."
+                register={register}
+                error={errors.description}
+                multiline
+                rows={5}
+            />
+
+          </section>
+
+          {/* Location */}
+          <section className=" p-5 rounded-xl shadow-sm border border-sand-beige
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-lg hover:border-forest-green/50">
+
+            <h3 className="font-bold mb-4">Location Details</h3>
+
+            <TextInput
+              name="locationArea"
+              label="Area"
+              register={register}
+              error={errors.locationArea}
+            />
+
+            <SelectInput
+              name="city"
+              label="City"
+              register={register}
+              error={errors.city}
+              options={cityOptions.filter((o) => o.value !== "")}
+            />
+
+            <TextInput
+              name="street"
+              label="Street Address"
+              register={register}
+              error={errors.street}
+            />
+
+            <TextInput
+              name="zip"
+              label="ZIP Code"
+              integerOnly
+              register={register}
+              error={errors.zip}
+            />
+          </section>
+
+          {/* Images */}
+          <section className=" p-5 rounded-xl shadow-sm border border-sand-beige
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-lg hover:border-forest-green/50">
+
+            <h3 className="font-bold mb-2">Image Section</h3>
+            <Controller
+              name="propertyImage"
+              control={control}
+              defaultValue={[]}
+              render={({ field }) => (
+                <ImageInput
+                  name={field.name}
+                  value={field.value}
+                  onChange={field.onChange}
+                  error={errors.propertyImage}
+                  multiple
+                />
+              )}
+            />
+
+          </section>
+        </div>
+
+        {/* RIGHT SIDE */}
+        <div className="flex flex-col space-y-6">
+          {/* Amenities */}
+          <section className=" p-5 rounded-xl shadow-sm border border-sand-beige
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-lg hover:border-forest-green/50">
+
+            <h3 className="font-bold mb-2">Amenities Section</h3>
+            <AmenityChips
+              name="amenities"
+              options={amenityOptions}
+              value={selectedAmenities}
+              setValue={setValue}
+              register={register}
+              error={errors.amenities}
+              allowCustom={true}
+            />
+
+          </section>
+
+          {/* Lease */}
+          <section className=" p-5 rounded-xl shadow-sm border border-sand-beige
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-lg hover:border-forest-green/50">
+
+            <h3 className="font-bold mb-2">Lease & Furnishing</h3>
+            <SelectInput
+              name="leaseType"
+              label="Lease Type"
+              register={register}
+              error={errors.leaseType}
+              options={leaseOptions.filter((o) => o.value !== "")}
+            />
+
+            <SelectInput
+              name="tenantType"
+              label="Tenant Type"
+              register={register}
+              error={errors.tenantType}
+              options={tenantOptions}
+            />
+
+            <SelectInput
+              name="furnishingStatus"
+              label="Furnishing Status"
+              register={register}
+              error={errors.furnishingStatus}
+              options={furnishingOptions.filter((o) => o.value !== "")}
+            />
+          </section>
+
+          {/* Property Info */}
+          <section className=" p-5 rounded-xl shadow-sm border border-sand-beige
+                transition-all duration-300 ease-out
+                hover:-translate-y-1 hover:shadow-lg hover:border-forest-green/50">
+
+            <h3 className="font-bold mb-4">Property Information</h3>
+            <TextInput
+              name="yearBuilt"
+              label="Year Built"
+              integerOnly
+              maxDigits={4}
+              register={register}
+              error={errors.yearBuilt}
+            />
+
+            <TextInput
+              name="level"
+              label="Number of Levels"
+              integerOnly
+              maxDigits={2}
+              register={register}
+              error={errors.level}
+            />
+
+            <div className="flex flex-row gap-4">
+              <TextInput
+                name="bed"
+                label="Bedroom"
+                integerOnly
+                maxDigits={2}
+                register={register}
+                error={errors.bed}
+              />
+
+              <TextInput
+                name="bath"
+                label="Bathroom"
+                integerOnly
+                maxDigits={2}
+                register={register}
+                error={errors.bath}
+              />
+
+              <TextInput
+                name="kitchen"
+                label="Kitchen"
+                integerOnly
+                maxDigits={2}
+                register={register}
+                error={errors.kitchen}
+              />
+            </div>
+          </section>
+
+          {/* Submit */}
+          <div className="sticky bottom-4 self-end bg-mint-green p-3 rounded-xl">
+            <Button type="submit" variant="secondary">
+              Register
+            </Button>
+          </div>
+        </div>
+      </div>
+    </form>
+  );
+}
